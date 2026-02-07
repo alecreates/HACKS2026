@@ -24,7 +24,6 @@ export default function SplashPage() {
 /> */
 
     <div className={styles.splashContainer}>
-      <Navbar />
       {/* Hero Section */}
       <div className={styles.hero}>
         {/* Background Pattern */}
