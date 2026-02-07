@@ -43,10 +43,13 @@ const Login = () => {
       localStorage.setItem("username", username);
       localStorage.setItem("token", token);
 
+      // trigger global update
+      window.dispatchEvent(new Event("auth-change"));
+
       alert("Login successful!");
 
       // Redirect to home page
-      router.push("/");
+      router.push("/feed");
 
     } catch (error) {
       console.error("Network error:", error);

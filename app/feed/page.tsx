@@ -21,14 +21,23 @@ interface Props {
 }*/
 
 const Feed = ({ }: FeedProps) => {
-
-
-
   return (
     <div className={styles.container}>
       <div className={styles.title}>
         Your Neighbor Listings
       </div>
+
+      <div className={styles.create_container}>
+        <div className={styles.create_card}>
+          <p>Need something from the community?</p>
+          <button className={styles.create_button} popoverTarget="create">Create Post</button>
+        </div>
+      </div>
+      <div popover="" id="create" className={styles.create_popover}>
+        <Create></Create>
+      </div>
+      <br/>
+
       <div className={styles["feed-grid"]}>
         <Listing displayName="Alex Neighbor" request="Need help fixing my fence" offer="Home-cooked meal" createdAt="5 days ago" />
         <Listing displayName="Sam Neighbor" request="Need help with gardening" offer="Gardening tools" createdAt="3 days ago" />
