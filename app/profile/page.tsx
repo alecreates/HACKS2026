@@ -5,7 +5,6 @@ import { ArrowLeft, User, Mail, Calendar, MapPin, LogOut } from 'lucide-react'
 import Link from "next/link"
 import { useRouter } from 'next/navigation'
 import styles from "./profile.module.css"
-import Navbar from "../nav/nav"
 import Card from "../components/Card"
 import Image from "next/image"
 
@@ -38,7 +37,6 @@ export default function ProfilePage() {
 
   return (
     <>
-      <Navbar />
       <div className={styles.container}>
       {/* Header */}
       <header className={styles.header}>
