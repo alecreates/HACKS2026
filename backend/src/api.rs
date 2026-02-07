@@ -85,11 +85,18 @@ impl IntoResponse for AuthError {
     }
 }
 
-#[derive(Copy, Clone)]
+#[derive(Clone)]
 pub enum ApiError {
     NotFound,
     Auth(AuthError),
     Forbidden,
+    Internal(InternalError),
+}
+
+impl ApiError {
+    pub fn internal(s: impl std::fmt::Display) -> ApiError {
+        ApiError::Internal(InternalError(s.to_string()))
+    }
 }
 
 impl IntoResponse for ApiError {
@@ -100,6 +107,7 @@ impl IntoResponse for ApiError {
             ApiError::NotFound => (SC::NOT_FOUND, "Not found").into_response(),
             ApiError::Auth(e) => e.into_response(),
             ApiError::Forbidden => (SC::FORBIDDEN, "Forbidden").into_response(),
+            ApiError::Internal(e) => e.into_response(),
         }
     }
 }
@@ -350,4 +358,90 @@ pub async fn feed(
         .map_err(e)?;
 
     Ok(AnyOf2::A(serde_json::to_string(&posts).unwrap()))
+}
+
+#[derive(Clone, Debug, Deserialize)]
+pub struct UserMatch {
+    pid: u64,
+}
+
+pub async fn make_match(
+    State(state): State<AppState>,
+    auth: Auth,
+    Json(q): Json<UserMatch>,
+)
+    -> Result<String, ApiError>
+{
+    let mut conn = state.db.lock().await;
+
+    #[derive(FromRow)]
+    struct P { author: i64 }
+    let data = sqlx::query_as::<_, P>(
+        "SELECT author FROM Posts WHERE id = $1;"
+    )
+        .bind(q.pid.cast_signed())
+        .fetch_one(&mut *conn)
+        .await;
+
+    let author = match data {
+        Ok(P { author }) => author,
+        Err(sqlx::Error::RowNotFound) => return Err(ApiError::NotFound),
+        Err(err) => return Err(ApiError::internal(err)),
+    };
+
+    _ = sqlx::query(
+        "INSERT INTO Matches (author, acceptor, post) VALUES ($1, $2, $3);"
+    )
+        .bind(author)
+        .bind(auth.user_id)
+        .bind(q.pid.cast_signed())
+        .execute(&mut *conn).await
+        .map_err(ApiError::internal)?;
+
+    Ok("Success".to_string())
+}
+
+pub async fn fetch_responses(
+    State(state): State<AppState>,
+    auth: Auth,
+)
+    -> Result<String, ApiError>
+{
+    let mut conn = state.db.lock().await;
+
+    #[derive(Serialize, FromRow)]
+    struct Item {
+        responder_id: i64,
+        responder_username: String,
+        responder_name: String,
+        responder_phone: String,
+
+        post_id: i64,
+        post_title: String,
+        post_request: String,
+        post_offer: String,
+        post_timestamp: i64,
+    }
+
+    let items = sqlx::query_as::<_, Item>(
+        "SELECT
+          u.id as responder_id,
+          u.name as responder_name,
+          u.username as responder_username,
+          u.phone as responder_name,
+          p.id as post_id,
+          p.title as post_title,
+          p.request as post_request,
+          p.offer as post_offer,
+          p.timestamp as post_timestamp
+        FROM Matches m
+        JOIN Users u on m.accepter = u.id
+        JOIN Posts p on m.post = p.id
+        WHERE m.author = $1 AND m.accepter IS NOT NULL;"
+    )
+        .bind(auth.user_id)
+        .fetch_all(&mut *conn).await
+        .map_err(ApiError::internal)?;
+
+    Ok(serde_json::to_string(&items).unwrap())
 }

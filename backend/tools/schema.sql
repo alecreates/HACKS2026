@@ -14,7 +14,6 @@ CREATE TABLE IF NOT EXISTS Posts (
 	request    TEXT NOT NULL,
 	offer      TEXT NOT NULL,
 	author     INTEGER NOT NULL,
-	accepter   INTEGER,
 	FOREIGN KEY(author) REFERENCES Users(id),
 	FOREIGN KEY(accepter) REFERENCES Users(id)
 ) STRICT;
