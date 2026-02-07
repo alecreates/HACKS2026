@@ -14,8 +14,8 @@ import Navbar from "./nav/nav"
 
 export default function SplashPage() {
   return (
-    <>
-    {/* <Feed></Feed> */}
+    
+      <Feed></Feed>
 
   {/*   <Listing
   displayName="Alex Neighbor"
