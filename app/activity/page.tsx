@@ -1,23 +1,42 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import styles from "./activity.module.css";
 import Card from "../components/Card";
 import { MessageCircle, User } from "lucide-react";
 
 const Activity = () => {
-  const communityRequests = [
-    { id: 1, title: "Help moving furniture", user: "Sarah Neighbor" },
-    { id: 2, title: "Garden watering", user: "Tom Neighbor" },
-    { id: 3, title: "Dog walking", user: "Maria Neighbor"},
+  const initialCommunityRequests: Array<{ id: number | string; title: string; user: string; suffix: string; phone: string }> = [
+    { id: 1, title: "Help moving furniture", user: "Sarah Neighbor", suffix: "would like to help.", phone: "555 555 5551"},
+    { id: 2, title: "Garden watering", user: "Tom Neighbor", suffix: "would like to help.", phone: "555 555 5552"},
+    { id: 3, title: "Dog walking", user: "Maria Neighbor", suffix: "would like to help.", phone: "555 555 5553"},
   ];
 
-  // Sample data for my requests
-  const myRequests = [
-    { id: 1, title: "Grocery shopping help", status: "pending", responses: 2 },
-    { id: 2, title: "Tech support needed", status: "in-progress", responses: 1 },
-    { id: 3, title: "Furniture assembly", status: "completed", responses: 3 },
+  // Sample data for archived requests
+  const initialArchivedRequests: Array<{ id: number | string; title: string; user: string; suffix: string; phone: string }> = [
+    { id: 1, title: "Grocery shopping help", user: "Sarah Neighbor", suffix: "helped with this request.", phone: "555 555 5551" },
+    { id: 2, title: "Tech support needed", user: "Tom Neighbor", suffix: "helped with this request.", phone: "555 555 5552" },
   ];
+
+  const [communityRequests, setCommunityRequests] = useState(initialCommunityRequests);
+  const [archivedRequests, setArchivedRequests] = useState(initialArchivedRequests);
+
+  const handleCheckRequest = (requestId: number | string) => {
+    const requestToArchive = communityRequests.find(req => req.id === requestId);
+    if (requestToArchive) {
+      // Change the suffix when moving to archived and create a unique ID
+      const archivedRequest = {
+        ...requestToArchive,
+        id: `archived-${requestToArchive.id}-${Date.now()}`,
+        suffix: `helped with this request.`
+      };
+      setCommunityRequests(communityRequests.filter(req => req.id !== requestId));
+      setArchivedRequests([...archivedRequests, archivedRequest]);
+    }
+  };
+
+
+
   return (
     <div className={styles.container}>
       {/* Header */}
@@ -32,12 +51,48 @@ const Activity = () => {
 
       {/* Main Content */}
       <main className={styles.main}>
-        {/* Community Requests Section */}
+        {/* Incoming Requests Section */}
         <div className={styles.section}>
-          <h2 className={styles.sectionTitle}>Potential Matches</h2>
+          <h2 className={styles.sectionTitle}>Incoming Requests</h2>
           <Card className={styles.requestCard}>
             <div className={styles.requestsContainer}>
-              {communityRequests.map((request) => (
+              {communityRequests.length === 0 ? (
+                <div className={styles.emptyState}>
+                  <p>No current requests 😄</p>
+                </div>
+              ) : (
+                communityRequests.map((request) => (
+                  <div key={request.id} className={styles.requestItem}>
+                    <input 
+                      type="checkbox" 
+                      className={styles.requestCheckbox}
+                      onChange={() => handleCheckRequest(request.id)}
+                    />
+                    <div className={styles.requestContent}>
+                      <div className={styles.requestHeader}>
+                        <div className={styles.requestTitle}>{request.title}</div>
+                      </div>
+                      <div className={styles.requestDetails}>
+                        <div className={styles.requestUser}>
+                          <User size={16} />
+                          {request.user} {request.suffix}
+                        </div>
+                        <div className={styles.contactInfo}>Contact: {request.phone}</div>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </Card>
+        </div>
+
+        {/* Archived Requests Section */}
+        <div className={styles.section}>
+          <h2 className={styles.sectionTitle}>Archived Requests</h2>
+          <Card className={styles.requestCard}>
+            <div className={styles.requestsContainer}>
+              {archivedRequests.map((request) => (
                 <div key={request.id} className={styles.requestItem}>
                   <div className={styles.requestHeader}>
                     <div className={styles.requestTitle}>{request.title}</div>
@@ -45,37 +100,9 @@ const Activity = () => {
                   <div className={styles.requestDetails}>
                     <div className={styles.requestUser}>
                       <User size={16} />
-                      {request.user}
+                      {request.user} {request.suffix}
                     </div>
                   </div>
-                  <button className={styles.respondButton}>Respond</button>
-                </div>
-              ))}
-            </div>
-          </Card>
-        </div>
-
-        {/* My Requests Section */}
-        <div className={styles.section}>
-          <h2 className={styles.sectionTitle}>My Requests</h2>
-          <Card className={styles.requestCard}>
-            <div className={styles.requestsContainer}>
-              {myRequests.map((request) => (
-                <div key={request.id} className={styles.requestItem}>
-                  <div className={styles.requestHeader}>
-                    <div className={styles.requestTitle}>{request.title}</div>
-                    <span className={`${styles.status} ${styles[`status${request.status}`]}`}>
-                      {request.status}
-                    </span>
-                  </div>
-                  <div className={styles.requestDetails}>
-                    <div className={styles.responses}>
-                      <MessageCircle size={16} />
-                      {request.responses} response{request.responses !== 1 ? 's' : ''}
-                    </div>
-                    <div className={styles.createdAt}>{request.createdAt}</div>
-                  </div>
-                  <button className={styles.viewButton}>View Details</button>
                 </div>
               ))}
             </div>
