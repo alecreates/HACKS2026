@@ -8,6 +8,11 @@ import { useState, useEffect } from "react"
 import { User, Bookmark, LogOut } from "lucide-react"
 import styles from './nav.module.css'
 import { useRouter } from "next/navigation";
+import { WandSparkles } from 'lucide-react';
+
+
+
+
 
 export default function Navbar() {
     const pathname = usePathname()
@@ -83,11 +88,11 @@ export default function Navbar() {
           <Link href="/" className={styles.logo}>
             <Image
               src="/UGAlogo_Arch_1in.png"
-              alt="UGA logo"
+              alt="Magic Neighbor logo"
               width={20}
               height={26}
             />
-            <span className={styles.logoText}>UGA Traffic</span>
+            <span className={styles.logoText}>Magic Neighbor</span>
           </Link>
 
           {/* Desktop Navigation */}
