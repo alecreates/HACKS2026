@@ -8,22 +8,29 @@ type Props = {
     request: string;
     offer: string;
     isOwner?: boolean;
+    username?: string;
     createdAt: string;
 };
 
 const handleMatchButton = (event: React.FormEvent) => {
     event.preventDefault();
     console.log('Match Made:');
-  };
+};
 
-const Listing = ({ displayName, request, offer, createdAt, isOwner = false }: Props) => {
+const Listing = ({ displayName, request, offer, createdAt, username, isOwner = false }: Props) => {
+
+    const currentUser = localStorage.getItem("username");
+    isOwner = username === currentUser;
+
     return (
         <div className={styles.container}>
             <div className={styles.card}>
 
                 {/* Header */}
                 <div className={styles.header}>
-                    <span className={styles.name}>{displayName}</span>
+                    <span className={styles.name}>
+                        {isOwner ? "You" : displayName}
+                    </span>
                 </div>
 
                 {/* Title */}

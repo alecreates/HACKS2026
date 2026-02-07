@@ -36,9 +36,6 @@ const Create = () => {
         alert("Posting failed: " + response);
         return;
       }
-
-      const post_id = parseInt(response);
-      router.push("/post/" + post_id);
     } catch (error) {
       console.error("Network error:", error);
       alert("Network error");
