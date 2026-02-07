@@ -87,6 +87,7 @@ impl IntoResponse for AuthError {
 
 #[derive(Clone)]
 pub enum ApiError {
+    CannotMatchWithSelf,
     NotFound,
     Auth(AuthError),
     Forbidden,
@@ -104,6 +105,7 @@ impl IntoResponse for ApiError {
         use StatusCode as SC;
 
         match self {
+            ApiError::CannotMatchWithSelf => (SC::BAD_REQUEST, "Cannot match with self").into_response(),
             ApiError::NotFound => (SC::NOT_FOUND, "Not found").into_response(),
             ApiError::Auth(e) => e.into_response(),
             ApiError::Forbidden => (SC::FORBIDDEN, "Forbidden").into_response(),
@@ -368,7 +370,7 @@ pub struct UserMatch {
 pub async fn make_match(
     State(state): State<AppState>,
     auth: Auth,
-    Json(q): Json<UserMatch>,
+    Query(q): Query<UserMatch>,
 )
     -> Result<String, ApiError>
 {
@@ -389,8 +391,12 @@ pub async fn make_match(
         Err(err) => return Err(ApiError::internal(err)),
     };
 
+    if author == auth.user_id {
+        return Err(ApiError::CannotMatchWithSelf);
+    }
+
     _ = sqlx::query(
-        "INSERT INTO Matches (author, acceptor, post) VALUES ($1, $2, $3);"
+        "INSERT INTO Matches (author, accepter, post) VALUES ($1, $2, $3);"
     )
         .bind(author)
         .bind(auth.user_id)
