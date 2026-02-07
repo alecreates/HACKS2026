@@ -1,3 +1,9 @@
+import Image from "next/image";
+import Profile from "./profile/page";
+import Login from "./login/page";
+import Create from "./create/page";
+import Listing from "./listing/page";
+import Feed from "./feed/page";
 import type React from "react"
 import Link from "next/link"
 import { HeartHandshake, Repeat, Users, WandSparkles } from 'lucide-react'
@@ -8,6 +14,15 @@ import Navbar from "./nav/nav"
 
 export default function SplashPage() {
   return (
+
+  /*   <Listing
+  displayName="Alex Neighbor"
+  request="Need help fixing my fence"
+  offer=
+    "Home-cooked meal"
+  createdAt="5 days ago" 
+/> */
+
     <div className={styles.splashContainer}>
       <Navbar />
       {/* Hero Section */}

@@ -1,0 +1,17 @@
+.container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f4f8f5;
+}
+
+.title {
+    font-size: larger;
+    justify-content: center;
+    align-items: center;
+    background: #f4f8f5;
+    display: flex;
+    color: #111827;
+    padding-top: 2.5rem;;
+}

@@ -18,6 +18,11 @@
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
   
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 30px rgba(0,0,0,0.12);
+    cursor: pointer;
+  }
   
   .header {
     display: flex;
@@ -50,24 +55,7 @@
     margin-bottom: 0.25rem;
   }
   
-  .field {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-
-  .field label {
-    font-size: 0.85rem;
-    color: #374151;
-  }
-  
-  .field input {
-    padding: 0.6rem;
-    border-radius: 6px;
-    border: 1px solid #e5e7eb;
-    color: black;
-  }
-  .postButton {
+  .matchButton {
     margin-top: 0.5rem;
     align-self: flex-end;
     padding: 0.6rem 1.2rem;
@@ -80,7 +68,8 @@
     transition: transform 0.15s ease, box-shadow 0.15s ease;
   }
   
-  .postButton:hover {
+  .matchButton:hover {
     transform: scale(1.03);
     box-shadow: 0 6px 15px rgba(52,168,83,0.35);
   }
+  

@@ -144,7 +144,7 @@ eg - there is no Map or Report page */}
             ) : (
               <>
                 <Link
-                  href="/login"
+                  href="/profile"
                   className={styles.iconButton}
                 >
                   <User size={20} color="#ffffff" />
