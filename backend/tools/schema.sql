@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS Users (
 	id       INTEGER PRIMARY KEY,
 	username TEXT UNIQUE NOT NULL,
 	name     TEXT NOT NULL,
-	password BLOB NOT NULL,
+	password TEXT NOT NULL,
 	nhood    INTEGER NOT NULL,
 	phone    TEXT NOT NULL
 ) STRICT;
@@ -26,4 +26,10 @@ CREATE TABLE IF NOT EXISTS Matches (
 	post     INTEGER NOT NULL,
 	FOREIGN KEY(author) REFERENCES Users(id),
 	FOREIGN KEY(accepter) REFERENCES Users(id)
+) STRICT;
+
+CREATE TABLE IF NOT EXISTS Sessions (
+	uuid     BLOB    PRIMARY KEY,
+	aud      TEXT    NOT NULL,
+	exp      INTEGER NOT NULL
 ) STRICT;
