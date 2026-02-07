@@ -1,15 +1,7 @@
-import Image from "next/image";
-import Profile from "./profile/page";
-import Login from "./login/page";
-import Create from "./create/page";
-import Listing from "./listing/page";
-import Feed from "./feed/page";
 import type React from "react"
 import Link from "next/link"
 import { HeartHandshake, Repeat, Users, WandSparkles } from 'lucide-react'
 import styles from "./splash.module.css"
-import Navbar from "./nav/nav"
-
 
 
 export default function SplashPage() {
