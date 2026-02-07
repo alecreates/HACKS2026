@@ -2,19 +2,21 @@
 
 import React from "react";
 import styles from "./create.module.css";
+import Image from "next/image";
+import myImage from "./images/jake.jpg";
 const Create = ({}) => {
 
   return (
     <div className={styles.card}>
-      <img 
-      src="./images/jake.jpg" 
+      <Image 
+      src={myImage}
       alt="Avatar" 
       width={200}
       height={200}
       />
       <div className={styles.container}>
-        <h4><b>John Doe</b></h4>
-        <p>Architect & Engineer</p>
+        <h4><b>Jake F. State-Farm</b></h4>
+        <p>Company Representative</p>
   </div>
 </div>
 
