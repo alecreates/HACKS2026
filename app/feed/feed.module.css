@@ -1,8 +1,4 @@
 .container {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     background: #f4f8f5;
 }
 
@@ -13,5 +9,20 @@
     background: #f4f8f5;
     display: flex;
     color: #111827;
-    padding-top: 2.5rem;;
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+    font-weight: 700
+}
+
+.feed-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(250px, 1fr));
+    column-gap: 16px;
+    row-gap: 16px;
+
+    max-width: 1000px;
+    margin: 0 auto;
+
+    align-content: start;
+    grid-auto-rows: auto;
 }

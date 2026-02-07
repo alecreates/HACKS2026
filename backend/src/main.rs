@@ -58,6 +58,7 @@ async fn main() -> AnyResult<()> {
     let app = Router::new()
         .route("/api/register", post(api::register))
         .route("/api/login", post(api::login))
+        .route("/api/create", post(api::create_post))
         // .route("/api/match", get(api::list_builds))
         .layer(TraceLayer::new_for_http())
         .layer(cors)

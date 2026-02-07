@@ -6,7 +6,7 @@ edition = "2024"
 [dependencies]
 argon2 = "0.5"
 anyhow = "1.0.98"
-axum = { version = "0.8.0", features = ["macros"] }
+axum = { version = "0.8.8", features = ["macros"] }
 chrono = { version = "0.4.41", features = ["serde"] }
 futures = "0.3.30"
 log = "0.4.27"
@@ -21,3 +21,4 @@ tower = { version = "0.5.2", features = ["util"] }
 tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
 jsonwebtoken = { version = "10.3.0", features = ["rust_crypto"] }
 uuid = { version = "1.20", features = ["v4", "fast-rng", "serde"] }
+axum-extra = { version = "0.12.5", features = ["typed-header"] }

@@ -15,14 +15,13 @@ import Navbar from "./nav/nav"
 export default function SplashPage() {
   return (
 
-  /*   <Listing
-  displayName="Alex Neighbor"
-  request="Need help fixing my fence"
-  offer=
-    "Home-cooked meal"
-  createdAt="5 days ago" 
-/> */
-
+    /*   <Listing
+    displayName="Alex Neighbor"
+    request="Need help fixing my fence"
+    offer=
+      "Home-cooked meal"
+    createdAt="5 days ago" 
+  /> */
     <div className={styles.splashContainer}>
       {/* Hero Section */}
       <div className={styles.hero}>
@@ -39,8 +38,8 @@ export default function SplashPage() {
             </div>
             <h1 className={styles.title}>Magic Neighbor</h1>
             <p className={styles.subtitle}>
-              A neighborhood exchange built on helping hands. Request help, offer your time, and support your community.         
-               </p>
+              A neighborhood exchange built on helping hands. Request help, offer your time, and support your community.
+            </p>
           </div>
 
           {/* CTA Buttons */}
@@ -93,3 +92,5 @@ function FeatureCard({ icon, title, description }: { icon: React.ReactNode; titl
     </div>
   )
 }
+
+
