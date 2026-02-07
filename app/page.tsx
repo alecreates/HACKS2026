@@ -14,16 +14,14 @@ import Navbar from "./nav/nav"
 
 export default function SplashPage() {
   return (
-    
-      <Feed></Feed>
 
-  {/*   <Listing
+  /*   <Listing
   displayName="Alex Neighbor"
   request="Need help fixing my fence"
   offer=
     "Home-cooked meal"
   createdAt="5 days ago" 
-/> */}
+/> */
 
     <div className={styles.splashContainer}>
       <Navbar />
@@ -84,7 +82,6 @@ export default function SplashPage() {
         </div>
       </footer>
     </div>
-    </>
   )
 }
 
