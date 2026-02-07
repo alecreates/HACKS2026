@@ -32,12 +32,9 @@ const Login = () => {
       const token = await res.text();
 
       if (!res.ok) {
-        console.error("Login failed:", token);
         alert("Login failed: " + token);
         return;
       }
-
-      console.log("Login successful, token:", token);
 
       // Store username and token in localStorage
       localStorage.setItem("username", username);

@@ -20,24 +20,16 @@ const Feed = () => {
           },
         });
 
-        if (!res.ok) {
-          throw new Error("Request failed: " + res.status);
-        }
+        // if (!res.ok) {
+        //   throw new Error("Request failed: " + res.status);
+        // }
 
         const data = await res.json();   // ✅ parentheses
-
-        console.log("FULL RESPONSE:", data);
-
-        // If it's an array of objects
-        data.forEach((item: any, index: number) => {
-          console.log(`Item ${index}:`, item);
-          console.log("Keys:", Object.keys(item));
-        });
 
         setFeedData(data); // store if you want to render later
       } catch (error) {
         console.error("Network error:", error);
-        alert("Network error");
+        alert("You're already requested this match!");
       }
     };
 
@@ -76,6 +68,7 @@ const Feed = () => {
               createdAt={new Date(item.timestamp * 1000).toLocaleString()}
               isOwner={false}
               username={item.username}
+              id={item.id}
             />
           ))
         )}
