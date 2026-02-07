@@ -11,6 +11,7 @@ type FeedProps = {
 
 const Feed = ({ listings }: FeedProps) => {
 
+  
   return (
     <div className={styles.container}>
       <div className={styles.title}>

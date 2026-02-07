@@ -58,6 +58,7 @@
   letter-spacing: -0.025em;
   text-wrap: balance;
   margin-bottom: 1rem;
+  color: black;
 }
 
 @media (min-width: 768px) {
