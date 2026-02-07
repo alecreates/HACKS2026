@@ -1,0 +1,29 @@
+CREATE TABLE IF NOT EXISTS Users (
+	id       INTEGER PRIMARY KEY,
+	username TEXT UNIQUE NOT NULL,
+	name     TEXT NOT NULL,
+	password BLOB NOT NULL,
+	nhood    INTEGER NOT NULL,
+	phone    TEXT NOT NULL
+) STRICT;
+
+CREATE TABLE IF NOT EXISTS Posts (
+	id         INTEGER PRIMARY KEY,
+	timestamp  INTEGER NOT NULL,
+	title      TEXT NOT NULL,
+	request    TEXT UNIQUE NOT NULL,
+	offer      TEXT UNIQUE NOT NULL,
+	author     INTEGER NOT NULL,
+	accepter   INTEGER,
+	FOREIGN KEY(author) REFERENCES Users(id),
+	FOREIGN KEY(accepter) REFERENCES Users(id)
+) STRICT;
+
+CREATE TABLE IF NOT EXISTS Matches (
+	id       INTEGER PRIMARY KEY,
+	author   INTEGER NOT NULL,
+	accepter INTEGER NOT NULL,
+	post     INTEGER NOT NULL,
+	FOREIGN KEY(author) REFERENCES Users(id),
+	FOREIGN KEY(accepter) REFERENCES Users(id)
+) STRICT;
