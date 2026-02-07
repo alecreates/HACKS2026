@@ -22,75 +22,15 @@ export default function SplashPage() {
     "Home-cooked meal"
   createdAt="5 days ago" 
 /> */
-
-    <div className={styles.splashContainer}>
-      <Navbar />
-      {/* Hero Section */}
-      <div className={styles.hero}>
-        {/* Background Pattern */}
-        <div className={styles.backgroundPattern}>
-          <div className={styles.patternGrid} />
-        </div>
-
-        <div className={styles.heroContent}>
-          {/* Logo/Brand */}
-          <div className={styles.brandSection}>
-            <div className={styles.logoCircle}>
-              <WandSparkles className={styles.logoIcon} />
-            </div>
-            <h1 className={styles.title}>Magic Neighbor</h1>
-            <p className={styles.subtitle}>
-              A neighborhood exchange built on helping hands. Request help, offer your time, and support your community.         
-               </p>
-          </div>
-
-          {/* CTA Buttons */}
-          <div className={styles.ctaButtons}>
-            <Link href="/register" className={`${styles.btn} ${styles.btnPrimary}`}>
-              Register
-            </Link>
-            <Link href="/login" className={`${styles.btn} ${styles.btnOutline}`}>
-              Log In
-            </Link>
-          </div>
-
-          {/* Feature Grid */}
-          <div className={styles.featureGrid}>
-            <FeatureCard
-              icon={<HeartHandshake className={styles.featureIcon} />}
-              title="Post a Request"
-              description="Ask neighbors for help with everyday needs, from fixing a fence to watching a dog."
-            />
-            <FeatureCard
-              icon={<Repeat className={styles.featureIcon} />}
-              title="Trade Favors"
-              description="Respond to requests with what you can offer and exchange help instead of money."
-            />
-            <FeatureCard
-              icon={<Users className={styles.featureIcon} />}
-              title="Build Community"
-              description="Strengthen your neighborhood by keeping support, skills, and trust local."
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Footer */}
-      <footer className={styles.footer}>
-        <div className={styles.footerContent}>
-          <p></p>
-        </div>
-      </footer>
-    </div>
-  )
-}
-
-function FeatureCard({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
-  return (
-    <div className={styles.featureCard}>
-      <div className={styles.featureIconWrapper}>{icon}</div>
-      <h3 className={styles.featureTitle}>{title}</h3>
-      <p className={styles.featureDescription}>{description}</p>
-    </div>
+<Feed listings={[
+  <Listing displayName="Alex Neighbor" request="Need help fixing my fence" offer="Home-cooked meal" createdAt="5 days ago" />,
+  <Listing displayName="Sam Neighbor" request="Need help with gardening" offer="Gardening tools" createdAt="3 days ago" />,
+  <Listing displayName="Taylor Neighbor" request="Need help with moving boxes" offer="Moving assistance" createdAt="1 day ago" />,
+  <Listing displayName="Jordan Neighbor" request="Need help with computer setup" offer="Tech support" createdAt="2 days ago" />,
+  <Listing displayName="Casey Neighbor" request="Need help with pet sitting" offer="Pet care services" createdAt="4 days ago"/>,
+  <Listing displayName="Riley Neighbor" request="Need help with painting a room" offer="Painting supplies" createdAt="6 days ago"/>,
+  <Listing displayName="Morgan Neighbor" request="Need help with car maintenance" offer="Car repair tools" createdAt="7 days ago"/>,
+]}>
+</Feed>
   )
 }
