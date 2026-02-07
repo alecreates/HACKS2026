@@ -9,5 +9,10 @@ export default function Home() {
      <Nav></Nav>
      <Login></Login>
    </>
+import Register from "./register/register";
+
+export default function Home() {
+  return (
+   <Register></Register>
   );
 }
