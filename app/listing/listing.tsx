@@ -1,0 +1,54 @@
+"use client";
+
+import React from "react";
+import styles from "./listing.module.css";
+
+type Props = {
+    displayName: string;
+    request: string;
+    offer: string;
+    isOwner?: boolean;
+    createdAt: string;
+};
+
+const handleMatchButton = (event: React.FormEvent) => {
+    event.preventDefault();
+    console.log('Match Made:');
+  };
+
+const Listing = ({ displayName, request, offer, createdAt, isOwner = false }: Props) => {
+    return (
+        <div className={styles.container}>
+            <div className={styles.card}>
+
+                {/* Header */}
+                <div className={styles.header}>
+                    <span className={styles.name}>Neighbor: {displayName}</span>
+                </div>
+
+                {/* Title */}
+                <h2 className={styles.title}>Request: {request}</h2>
+
+                {/* Offer */}
+                <h2 className={styles.offers}>
+                    Exchange Offer: {offer}
+                </h2>
+
+                <h2 className={styles.offers}>
+                    Created: {createdAt}
+                </h2>
+
+                {/* Action */}
+                {!isOwner && (
+                    <button className={styles.matchButton}>
+                        Match
+                    </button>
+                )}
+
+            </div>
+        </div>
+
+    );
+};
+
+export default Listing;
