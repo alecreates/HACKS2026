@@ -434,7 +434,7 @@ pub async fn fetch_responses(
           u.id as responder_id,
           u.name as responder_name,
           u.username as responder_username,
-          u.phone as responder_name,
+          u.phone as responder_phone,
           p.id as post_id,
           p.title as post_title,
           p.request as post_request,
