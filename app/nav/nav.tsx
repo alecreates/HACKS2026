@@ -8,21 +8,35 @@ import styles from './nav.module.css'
 
 export default function Navbar() {
   const router = useRouter()
-  const [isLoggedIn, setIsLoggedIn] = useState(true)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [username, setUsername] = useState("")
 
   // Check token on mount
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token")
-  //   const storedUsername = localStorage.getItem("username") || ""
-  //   if (token) {
-  //     setIsLoggedIn(true)
-  //     setUsername(storedUsername)
-  //   } else {
-  //     setIsLoggedIn(false)
-  //     setUsername("")
-  //   }
-  // }, [])
+  useEffect(() => {
+    const checkAuth = () => {
+      const token = localStorage.getItem("token");
+      const username = localStorage.getItem("username");
+  
+      if (token) {
+        setIsLoggedIn(true);
+        setUsername(username || "");
+      } else {
+        setIsLoggedIn(false);
+        setUsername("");
+      }
+    };
+  
+    // run on mount
+    checkAuth();
+  
+    // listen for login/logout
+    window.addEventListener("auth-change", checkAuth);
+  
+    return () => {
+      window.removeEventListener("auth-change", checkAuth);
+    };
+  }, []);
+  
 
   const handleLogout = () => {
     localStorage.removeItem("token")
