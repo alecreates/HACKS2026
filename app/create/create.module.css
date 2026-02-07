@@ -1,3 +1,11 @@
+.container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f4f8f5;
+  }
+
 .card {
   /* Add shadows to create the "card" effect */
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
@@ -10,7 +18,7 @@
 }
 
 /* Add some padding inside the card container */
-.container {
+.infoContainer {
     background-color: white;
     color: black;
     width: 200px;
