@@ -13,7 +13,6 @@ import { WandSparkles } from 'lucide-react';
 
 
 
-
 export default function Navbar() {
     const pathname = usePathname()
     const searchParams = useSearchParams()
@@ -75,9 +74,9 @@ export default function Navbar() {
     }
 
     const navLinks = [
-        { href: "/", label: "Home" },
-        { href: "/map", label: "Map" },
-        { href: "/report", label: "Report" },
+        //{ href: "/", label: "Home" },
+        { href: "/feed", label: "Feed" },
+        { href: "/activity", label: "My Activity" },
     ]
 
     return (
@@ -86,14 +85,23 @@ export default function Navbar() {
         <div className={styles.navInner}>
           {/* Logo */}
           <Link href="/" className={styles.logo}>
-            <Image
-              src="/UGAlogo_Arch_1in.png"
-              alt="Magic Neighbor logo"
-              width={20}
-              height={26}
-            />
+            <WandSparkles size={26} color="#ffffff" />
             <span className={styles.logoText}>Magic Neighbor</span>
           </Link>
+
+
+
+
+
+
+
+{/* Copied from last project - feel free to adjust as needed 
+eg - there is no Map or Report page */}
+
+
+
+
+
 
           {/* Desktop Navigation */}
           <div className={styles.desktopNav}>
