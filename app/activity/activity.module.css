@@ -1,6 +1,6 @@
 .container {
   min-height: 100vh;
-  background-color: var(--background);
+  background: #f4f8f5;
 }
 
 .header {
@@ -53,9 +53,8 @@
 }
 
 .requestCard {
-  background-color: #ffffff;
-  border: 0.5px solid #d0d0d0;
-  border-radius: 8px;
+  background: white;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
   padding: 0 !important;
 }
 
@@ -95,30 +94,7 @@
   color: black;
 }
 
-.urgency {
-  display: inline-block;
-  padding: 0.25rem 0.75rem;
-  border-radius: 4px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: capitalize;
-  white-space: nowrap;
-}
 
-.urgencyhigh {
-  background-color: #fee2e2;
-  color: #991b1b;
-}
-
-.urgencymedium {
-  background-color: #fef3c7;
-  color: #92400e;
-}
-
-.urgencylow {
-  background-color: #dbeafe;
-  color: #0c2d6b;
-}
 
 .status {
   display: inline-block;
