@@ -4,6 +4,7 @@ import React from "react";
 import styles from "./feed.module.css";
 import { ReactElement } from "react";
 import Listing from "../listing/listing";
+import Create from "../create/create";
 
 type FeedProps = {
   listings: ReactElement<typeof Listing>[];
@@ -18,10 +19,11 @@ const Feed = ({ listings }: FeedProps) => {
         Your Neighbor Listings
       </div>
 
-        <div className={styles["feed-grid"]}>
-          {listings}
-        </div>
+      <Create></Create>
 
+      <div className={styles["feed-grid"]}>
+        {listings}
+      </div>
     </div>
 
   );

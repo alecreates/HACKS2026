@@ -303,21 +303,20 @@ pub async fn create_post(
 {
     let mut conn = state.db.lock().await;
 
-    let r = sqlx::query(
-        "INSERT INTO Posts (timestamp, title, request, offer, author) VALUES ($1, $2, $3, $4, $5);"
+    let pid: i64 = sqlx::query_scalar(
+        "INSERT INTO Posts
+          (timestamp, title, request, offer, author)
+        VALUES
+          ($1, $2, $3, $4, $5)
+        RETURNING id;"
     )
         .bind(chrono::Utc::now().timestamp())
         .bind(q.title)
         .bind(q.request)
         .bind(q.offer)
         .bind(auth.user_id)
-        .execute(&mut *conn)
-        .await
+        .fetch_one(&mut *conn).await
         .map_err(e)?;
 
-    if r.rows_affected() != 1 {
-        return Err(e("Internal database error"));
-    }
-
-    Ok(AnyOf2::A("Success".into()))
+    Ok(AnyOf2::A(pid.to_string()))
 }
