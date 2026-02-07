@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { ArrowLeft, User, Mail, Calendar, MapPin, LogOut } from 'lucide-react'
+import { User, Mail, Calendar, LogOut } from 'lucide-react'
 import Link from "next/link"
 import { useRouter } from 'next/navigation'
 import styles from "./profile.module.css"
@@ -41,9 +41,6 @@ export default function ProfilePage() {
       {/* Header */}
       <header className={styles.header}>
         <div className={styles.headerContent}>
-          <Link href="/feed" className={styles.backButton}>
-            <ArrowLeft className={styles.backIcon} />
-          </Link>
           <div>
             <h1 className={styles.headerTitle}>Profile</h1>
             <p className={styles.headerSubtitle}>Manage your account settings</p>
