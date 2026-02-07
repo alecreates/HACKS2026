@@ -7,8 +7,14 @@ const Feed = ({}) => {
 
   return (
     <div>
-      Feed!!
+      <div className={styles.title}>
+        Your Neighbor Listings
+      </div>
+    <div className={styles.container}>
+      
     </div>
+    </div>
+    
   );
 };
 

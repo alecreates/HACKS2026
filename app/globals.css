@@ -3,6 +3,13 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --card: #f5f5f5;
+  --border: #e5e5e5;
+  --radius: 0.5rem;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --primary: #34a853;
+  --destructive: #ef4444;
 }
 
 @theme inline {
@@ -16,6 +23,12 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --card: #1a1a1a;
+    --border: #333333;
+    --muted: #2a2a2a;
+    --muted-foreground: #a0a0a0;
+    --primary: #34a853;
+    --destructive: #ef4444;
   }
 }
 
