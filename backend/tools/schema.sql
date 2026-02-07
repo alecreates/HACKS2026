@@ -11,8 +11,8 @@ CREATE TABLE IF NOT EXISTS Posts (
 	id         INTEGER PRIMARY KEY,
 	timestamp  INTEGER NOT NULL,
 	title      TEXT NOT NULL,
-	request    TEXT UNIQUE NOT NULL,
-	offer      TEXT UNIQUE NOT NULL,
+	request    TEXT NOT NULL,
+	offer      TEXT NOT NULL,
 	author     INTEGER NOT NULL,
 	accepter   INTEGER,
 	FOREIGN KEY(author) REFERENCES Users(id),
@@ -30,6 +30,8 @@ CREATE TABLE IF NOT EXISTS Matches (
 
 CREATE TABLE IF NOT EXISTS Sessions (
 	uuid     BLOB    PRIMARY KEY,
+	user     INTEGER NOT NULL,
 	aud      TEXT    NOT NULL,
-	exp      INTEGER NOT NULL
+	exp      INTEGER NOT NULL,
+	FOREIGN KEY(user) REFERENCES Users(id)
 ) STRICT;

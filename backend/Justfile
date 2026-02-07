@@ -1,3 +1,10 @@
+resetdb:
+	rm -f main.sqlite3
+	sqlite3 main.sqlite3 < tools/schema.sql
+	ssh illuvatar -- 'sudo systemctl stop hacks26'
+	scp main.sqlite3 illuvatar:/home/hacks26
+	ssh illuvatar -- 'sudo systemctl start hacks26'
+
 deploy:
 	cargo build --release
 	ssh illuvatar -- 'sudo systemctl stop hacks26'

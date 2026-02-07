@@ -3,9 +3,14 @@ use argon2::{
     password_hash::{PasswordHashString, PasswordVerifier, PasswordHasher, SaltString}
 };
 use axum::{
-    extract::{Json, Query, State},
-    http::{Method, StatusCode},
+    extract::{Json, Query, State, FromRequestParts},
+    http::{request::Parts, Method, StatusCode},
     response::{Response, Redirect, IntoResponse},
+    RequestPartsExt,
+};
+use axum_extra::{
+    headers::{authorization::Bearer, Authorization},
+    TypedHeader,
 };
 use chrono::{DateTime, Utc};
 use serde_json;
@@ -57,6 +62,9 @@ impl IntoResponse for ServerError {
 pub enum AuthError {
     WrongPassword,
     NoSuchUser,
+    InvalidToken,
+    UnknownToken,
+    ServerError,
 }
 
 impl std::fmt::Display for AuthError {
@@ -64,7 +72,16 @@ impl std::fmt::Display for AuthError {
         match self {
             AuthError::WrongPassword => write!(f, "Wrong password"),
             AuthError::NoSuchUser => write!(f, "That user isn't registered"),
+            AuthError::InvalidToken => write!(f, "Invalid or expired bearer token"),
+            AuthError::UnknownToken => write!(f, "Valid but unknown token(?!)"),
+            AuthError::ServerError => write!(f, "Server error when validating JWT"),
         }
+    }
+}
+
+impl IntoResponse for AuthError {
+    fn into_response(self) -> Response {
+        (StatusCode::FORBIDDEN, self.to_string()).into_response()
     }
 }
 
@@ -81,7 +98,7 @@ impl IntoResponse for ApiError {
 
         match self {
             ApiError::NotFound => (SC::NOT_FOUND, "Not found").into_response(),
-            ApiError::Auth(e) => (SC::FORBIDDEN, e.to_string()).into_response(),
+            ApiError::Auth(e) => e.into_response(),
             ApiError::Forbidden => (SC::FORBIDDEN, "Forbidden").into_response(),
         }
     }
@@ -161,16 +178,16 @@ pub async fn login(
     let argon2 = Argon2::default();
 
     #[derive(FromRow)]
-    struct P { password: String }
+    struct P { id: i64, password: String }
     let data = sqlx::query_as::<_, P>(
-        "SELECT password FROM Users WHERE username = $1;"
+        "SELECT id, password FROM Users WHERE username = $1;"
     )
         .bind(&q.username)
         .fetch_one(&mut *conn)
         .await;
 
-    let password_hash: PasswordHashString = match data {
-        Ok(P { password }) => PasswordHashString::new(&password).unwrap(),
+    let (uid, password_hash) = match data {
+        Ok(P { id, password }) => (id, PasswordHashString::new(&password).unwrap()),
         Err(sqlx::Error::RowNotFound) => return Ok(AnyOf2::B(ApiError::Auth(AuthError::NoSuchUser))),
         Err(err) => return Err(e(err)),
     };
@@ -179,15 +196,12 @@ pub async fn login(
         return Ok(AnyOf2::B(ApiError::Auth(AuthError::WrongPassword)));
     }
 
-    if let Err(er) = generate_jwt(1) {
-        return Err(e(format!("jwt error: {:?}", er)));
-    }
-
-    let (claims, jwt) = generate_jwt(1).map_err(e)?;
+    let (claims, jwt) = generate_jwt(77).map_err(e)?;
 
     let r = sqlx::query(
-        "INSERT INTO Sessions (uuid, aud, exp) VALUES ($1, $2, $3);"
+        "INSERT INTO Sessions (user, uuid, aud, exp) VALUES ($1, $2, $3, $4);"
     )
+        .bind(uid)
         .bind(&claims.uuid.as_bytes()[..])
         .bind(claims.aud)
         .bind(claims.exp.cast_signed())
@@ -200,6 +214,54 @@ pub async fn login(
     }
 
     Ok(AnyOf2::A(jwt))
+}
+
+#[derive(Clone, Debug)]
+pub struct Auth {
+    user_id: i64,
+    username: String,
+    claims: ClientClaims,
+}
+
+impl FromRequestParts<AppState> for Auth {
+    type Rejection = AuthError;
+
+    async fn from_request_parts(parts: &mut Parts, state: &AppState) -> Result<Self, Self::Rejection> {
+        let mut conn = state.db.lock().await;
+
+        let TypedHeader(Authorization(bearer)) = parts
+            .extract::<TypedHeader<Authorization<Bearer>>>()
+            .await
+            .map_err(|_| AuthError::InvalidToken)?;
+
+        let mut validation = jsonwebtoken::Validation::new(jsonwebtoken::Algorithm::HS256);
+        validation.set_audience(&["hacks26"]);
+        validation.set_required_spec_claims(&["exp", "aud"]);
+
+        let key = jsonwebtoken::DecodingKey::from_secret("wawa".as_bytes());
+
+        let claims = match jsonwebtoken::decode::<ClientClaims>(bearer.token(), &key, &validation) {
+            Ok(c) => c.claims,
+            Err(_) => return Err(AuthError::InvalidToken),
+        };
+
+        let data = sqlx::query_as::<_, (i64, String)>(
+            "SELECT u.id, u.username FROM Sessions JOIN Users u on u.id = user WHERE uuid = $1;"
+        )
+            .bind(&claims.uuid.as_bytes()[..])
+            .fetch_one(&mut *conn).await;
+
+        let (id, username) = match data {
+            Ok(d) => d,
+            Err(sqlx::Error::RowNotFound) => return Err(AuthError::UnknownToken),
+            Err(e) => {
+                log::error!("JWT Validation error: {:?}", e);
+                return Err(AuthError::ServerError);
+            },
+        };
+
+        Ok(Auth { claims, user_id: id, username })
+    }
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, FromRow)]
@@ -223,4 +285,39 @@ fn generate_jwt(expiry_hours: u64)
     )?;
 
     Ok((claims, jwt))
+}
+
+#[derive(Clone, Debug, Deserialize)]
+pub struct UserCreatePost {
+    title: String,
+    request: String,
+    offer: String,
+}
+
+pub async fn create_post(
+    State(state): State<AppState>,
+    auth: Auth,
+    Json(q): Json<UserCreatePost>,
+)
+    -> Result<AnyOf2<String, ApiError>, InternalError>
+{
+    let mut conn = state.db.lock().await;
+
+    let r = sqlx::query(
+        "INSERT INTO Posts (timestamp, title, request, offer, author) VALUES ($1, $2, $3, $4, $5);"
+    )
+        .bind(chrono::Utc::now().timestamp())
+        .bind(q.title)
+        .bind(q.request)
+        .bind(q.offer)
+        .bind(auth.user_id)
+        .execute(&mut *conn)
+        .await
+        .map_err(e)?;
+
+    if r.rows_affected() != 1 {
+        return Err(e("Internal database error"));
+    }
+
+    Ok(AnyOf2::A("Success".into()))
 }
