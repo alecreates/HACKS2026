@@ -21,14 +21,13 @@ interface Props {
 }*/
 
 const Feed = ({ }: FeedProps) => {
-
-
-
   return (
     <div className={styles.container}>
       <div className={styles.title}>
         Your Neighbor Listings
       </div>
+      <Create></Create>
+      <br/>
       <div className={styles["feed-grid"]}>
         <Listing displayName="Alex Neighbor" request="Need help fixing my fence" offer="Home-cooked meal" createdAt="5 days ago" />
         <Listing displayName="Sam Neighbor" request="Need help with gardening" offer="Gardening tools" createdAt="3 days ago" />
