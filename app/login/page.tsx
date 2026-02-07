@@ -49,7 +49,7 @@ const Login = () => {
       alert("Login successful!");
 
       // Redirect to home page
-      router.push("/");
+      router.push("/feed");
 
     } catch (error) {
       console.error("Network error:", error);

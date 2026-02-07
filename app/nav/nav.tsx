@@ -53,7 +53,7 @@ export default function Navbar() {
       <div className={styles.container}>
         <div className={styles.navInner}>
           {/* Logo always visible */}
-          <Link href="/" className={styles.logo}>
+          <Link href={isLoggedIn ? "/feed" : "/"} className={styles.logo}>
             <WandSparkles size={26} color="#ffffff" />
             <span className={styles.logoText}>Magic Neighbor</span>
           </Link>
