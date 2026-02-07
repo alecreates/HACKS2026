@@ -7,16 +7,16 @@ import { MessageCircle, User } from "lucide-react";
 
 const Activity = () => {
   const communityRequests = [
-    { id: 1, title: "Help moving furniture", user: "Sarah Neighbor", location: "3 blocks away", urgency: "high" },
-    { id: 2, title: "Garden watering", user: "Tom Neighbor", location: "2 blocks away", urgency: "low" },
-    { id: 3, title: "Dog walking", user: "Maria Neighbor", location: "1 block away", urgency: "medium" },
+    { id: 1, title: "Help moving furniture", user: "Sarah Neighbor" },
+    { id: 2, title: "Garden watering", user: "Tom Neighbor" },
+    { id: 3, title: "Dog walking", user: "Maria Neighbor"},
   ];
 
   // Sample data for my requests
   const myRequests = [
-    { id: 1, title: "Grocery shopping help", status: "pending", responses: 2, createdAt: "2 days ago" },
-    { id: 2, title: "Tech support needed", status: "in-progress", responses: 1, createdAt: "5 days ago" },
-    { id: 3, title: "Furniture assembly", status: "completed", responses: 3, createdAt: "1 week ago" },
+    { id: 1, title: "Grocery shopping help", status: "pending", responses: 2 },
+    { id: 2, title: "Tech support needed", status: "in-progress", responses: 1 },
+    { id: 3, title: "Furniture assembly", status: "completed", responses: 3 },
   ];
   return (
     <div className={styles.container}>
@@ -34,23 +34,19 @@ const Activity = () => {
       <main className={styles.main}>
         {/* Community Requests Section */}
         <div className={styles.section}>
-          <h2 className={styles.sectionTitle}>Community Requests</h2>
+          <h2 className={styles.sectionTitle}>Potential Matches</h2>
           <Card className={styles.requestCard}>
             <div className={styles.requestsContainer}>
               {communityRequests.map((request) => (
                 <div key={request.id} className={styles.requestItem}>
                   <div className={styles.requestHeader}>
                     <div className={styles.requestTitle}>{request.title}</div>
-                    <span className={`${styles.urgency} ${styles[`urgency${request.urgency}`]}`}>
-                      {request.urgency}
-                    </span>
                   </div>
                   <div className={styles.requestDetails}>
                     <div className={styles.requestUser}>
                       <User size={16} />
                       {request.user}
                     </div>
-                    <div className={styles.requestLocation}>📍 {request.location}</div>
                   </div>
                   <button className={styles.respondButton}>Respond</button>
                 </div>

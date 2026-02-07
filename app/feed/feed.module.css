@@ -1,5 +1,6 @@
 .container {
     background: #f4f8f5;
+    overflow-y: auto; /* vertical scrollbar */
 }
 
 .title {
@@ -71,3 +72,5 @@
     align-content: start;
     grid-auto-rows: auto;
 }
+
+  
