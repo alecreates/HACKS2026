@@ -20,10 +20,6 @@ const Feed = () => {
           },
         });
 
-        // if (!res.ok) {
-        //   throw new Error("Request failed: " + res.status);
-        // }
-
         const data = await res.json();   // ✅ parentheses
 
         setFeedData(data); // store if you want to render later
