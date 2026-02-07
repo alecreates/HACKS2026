@@ -59,7 +59,7 @@ async fn main() -> AnyResult<()> {
         .route("/api/register", post(api::register))
         .route("/api/login", post(api::login))
         .route("/api/create", post(api::create_post))
-        // .route("/api/match", get(api::list_builds))
+        .route("/api/feed", get(api::feed))
         .layer(TraceLayer::new_for_http())
         .layer(cors)
         .with_state(state);

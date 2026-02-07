@@ -320,3 +320,34 @@ pub async fn create_post(
 
     Ok(AnyOf2::A(pid.to_string()))
 }
+
+pub async fn feed(
+    State(state): State<AppState>,
+    _: Auth,
+)
+    -> Result<AnyOf2<String, ApiError>, InternalError>
+{
+    let mut conn = state.db.lock().await;
+
+    #[derive(Serialize, FromRow)]
+    struct Post {
+        id: i64,
+        author: String,
+        username: String,
+        timestamp: i64,
+        title: String,
+        request: String,
+        offer: String,
+    }
+
+    let posts = sqlx::query_as::<_, Post>(
+        "SELECT
+          p.id, u.name as author, u.username, p.title, p.request, p.offer, p.timestamp
+        FROM Posts p
+        JOIN Users u on author = u.id;"
+    )
+        .fetch_all(&mut *conn).await
+        .map_err(e)?;
+
+    Ok(AnyOf2::A(serde_json::to_string(&posts).unwrap()))
+}
