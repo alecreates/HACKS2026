@@ -29,9 +29,6 @@ const Feed = ({ }: FeedProps) => {
       <div className={styles.title}>
         Your Neighbor Listings
       </div>
-      
-      <Create></Create>
-      
       <div className={styles["feed-grid"]}>
         <Listing displayName="Alex Neighbor" request="Need help fixing my fence" offer="Home-cooked meal" createdAt="5 days ago" />
         <Listing displayName="Sam Neighbor" request="Need help with gardening" offer="Gardening tools" createdAt="3 days ago" />
@@ -41,12 +38,7 @@ const Feed = ({ }: FeedProps) => {
         <Listing displayName="Riley Neighbor" request="Need help with painting a room" offer="Painting supplies" createdAt="6 days ago" />
         <Listing displayName="Morgan Neighbor" request="Need help with car maintenance" offer="Car repair tools" createdAt="7 days ago" />
       </div>
-
-      <div className={styles["feed-grid"]}>
-        {listings}
-      </div>
     </div>
-
   );
 };
 
