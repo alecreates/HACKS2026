@@ -1,14 +1,10 @@
 "use client";
 
-import React, {useState} from "react";
+import React, { useState } from "react";
 import styles from "./create.module.css";
-import Image from "next/image";
-import myImage from "./images/jake.jpg";
-
-
 
 const Create = () => {
-  
+
   const [request, setRequest] = useState('');
   const [offer, setOffer] = useState('');
 
@@ -19,18 +15,18 @@ const Create = () => {
 
   return (
     <div className={styles.container}>
-      
+
       <form onSubmit={handlePost} className={styles.createForm}>
         <div className={styles.card}>
 
           {/* Header */}
           <div className={styles.header}>
-            <span className={styles.name}>Create Post!</span>
+            <span className={styles.name}>Create Post</span>
           </div>
-          
+
           {/* Title */}
           <h2 className={styles.title}>
-            Your request:
+            Your Request:
           </h2>
           <div className={styles.field}>
             <input
@@ -46,7 +42,7 @@ const Create = () => {
           <h2 className={styles.title}>
             Your Offer:
           </h2>
-<div className={styles.field}>
+          <div className={styles.field}>
             <input
               type="text"
               id="offer"
