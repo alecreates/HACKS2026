@@ -1,0 +1,277 @@
+.container {
+  min-height: 100vh;
+  background-color: var(--background);
+}
+
+.header {
+  background-color: var(--card);
+  border-bottom: 1px solid var(--border);
+  padding: 1rem;
+}
+
+.headerContent {
+  max-width: 56rem;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.backButton {
+  background: transparent;
+  border: none;
+  padding: 0.5rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--foreground);
+  transition: background-color 0.2s;
+  text-decoration: none;
+}
+
+.backButton:hover {
+  background-color: var(--muted);
+}
+
+.backIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.headerTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  color: black;
+}
+
+.headerSubtitle {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.main {
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Profile Card */
+.profileCard {
+  background-color: #efefef;
+  border: 0.5px solid #d0d0d0;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.profileContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .profileContent {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+.avatar {
+  width: 6rem;
+  height: 6rem;
+  border-radius: 50%;
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.avatarText {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.profileImage {
+  width: 6rem;
+  height: 6rem;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.profileInfo {
+  flex: 1;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .profileInfo {
+    text-align: left;
+  }
+}
+
+.profileName {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: black;
+}
+
+.profileMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+  .profileMeta {
+    flex-direction: row;
+    gap: 1rem;
+  }
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .metaItem {
+    justify-content: flex-start;
+  }
+}
+
+.metaIcon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background-color: transparent;
+  color: #34a853;
+  border: 1.5px solid #34a853;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Stats */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .statsGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.statCard {
+  background-color: #efefef;
+  border: 0.5px solid #d0d0d0;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.statTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: black;
+}
+
+.statValue {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: black;
+}
+
+.statLabel {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+/* Actions */
+.actionsCard {
+  background-color: #efefef;
+  border: 0.5px solid #d0d0d0;
+  border-radius: 8px;
+}
+
+.actionsHeader {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.actionsTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: black;
+}
+
+.actionsSubtitle {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.actionsContent {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.actionButton,
+.actionButtonDanger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  background-color: transparent;
+  color: var(--foreground);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.actionButton:hover {
+  background-color: var(--muted);
+}
+
+.actionButtonDanger {
+  color: var(--destructive);
+}
+
+.actionButtonDanger:hover {
+  background-color: color-mix(in srgb, var(--destructive) 10%, transparent);
+}
+
+.actionIcon {
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.5rem;
+}

@@ -4,15 +4,19 @@ import { useEffect, useState } from "react"
 import { ArrowLeft, User, Mail, Calendar, MapPin, LogOut } from 'lucide-react'
 import Link from "next/link"
 import { useRouter } from 'next/navigation'
-import styles from "../profile.module.css"
+import styles from "./profile.module.css"
+import Navbar from "../nav/nav"
+import Card from "../components/Card"
+import Image from "next/image"
 
 export default function ProfilePage() {
+
   const router = useRouter()
   const [userEmail, setUserEmail] = useState("")
   const [userName, setUserName] = useState("")
 
   useEffect(() => {
-    const email = localStorage.getItem("userEmail") || "jacke@gmail.com"
+    const email = localStorage.getItem("userEmail") || "jake@gmail.com"
     const name = localStorage.getItem("userName") || "Jake"
     setUserEmail(email)
     setUserName(name)
@@ -33,11 +37,13 @@ export default function ProfilePage() {
     .slice(0, 2)
 
   return (
-    <div className={styles.container}>
+    <>
+      <Navbar />
+      <div className={styles.container}>
       {/* Header */}
       <header className={styles.header}>
         <div className={styles.headerContent}>
-          <Link href="/map" className={styles.backButton}>
+          <Link href="/feed" className={styles.backButton}>
             <ArrowLeft className={styles.backIcon} />
           </Link>
           <div>
@@ -50,11 +56,15 @@ export default function ProfilePage() {
       {/* Content */}
       <main className={styles.main}>
         {/* Profile Card */}
-        <div className={styles.profileCard}>
+        <Card className={styles.profileCard}>
           <div className={styles.profileContent}>
-            <div className={styles.avatar}>
-              <span className={styles.avatarText}>{initials}</span>
-            </div>
+            <Image
+              src="/jake.png"
+              alt={userName}
+              width={96}
+              height={96}
+              className={styles.profileImage}
+            />
             <div className={styles.profileInfo}>
               <h2 className={styles.profileName}>{userName}</h2>
               <div className={styles.profileMeta}>
@@ -64,54 +74,49 @@ export default function ProfilePage() {
                 </div>
                 <div className={styles.metaItem}>
                   <Calendar className={styles.metaIcon} />
-                  Member since 2025
+                  Neighbor since 2020
                 </div>
               </div>
               <span className={styles.badge}>Active User</span>
             </div>
           </div>
-        </div>
+        </Card>
 
         {/* Stats */}
         <div className={styles.statsGrid}>
-          <div className={styles.statCard}>
-            <h3 className={styles.statTitle}>Routes Planned</h3>
-            <div className={styles.statValue}>24</div>
+          <Card className={styles.statCard}>
+            <h3 className={styles.statTitle}>Neighbors Helped</h3>
+            <div className={styles.statValue}>8</div>
             <p className={styles.statLabel}>This month</p>
-          </div>
-          <div className={styles.statCard}>
-            <h3 className={styles.statTitle}>Saved Locations</h3>
-            <div className={styles.statValue}>
-              {JSON.parse(localStorage.getItem("savedLocations") || "[]").length}
-            </div>
-            <p className={styles.statLabel}>Total saved</p>
-          </div>
-          <div className={styles.statCard}>
-            <h3 className={styles.statTitle}>Alerts Reported</h3>
-            <div className={styles.statValue}>5</div>
-            <p className={styles.statLabel}>Community contributions</p>
-          </div>
+          </Card>
+          <Card className={styles.statCard}>
+            <h3 className={styles.statTitle}>Requests Made</h3>
+            <div className={styles.statValue}>2</div>
+            <p className={styles.statLabel}>Total</p>
+          </Card>
+          <Card className={styles.statCard}>
+            <h3 className={styles.statTitle}>Favors Exchanged</h3>
+            <div className={styles.statValue}>10</div>
+            <p className={styles.statLabel}>All time</p>
+          </Card>
         </div>
 
         {/* Actions */}
-        <div className={styles.actionsCard}>
+        <Card className={styles.actionsCard}>
           <div className={styles.actionsHeader}>
             <h2 className={styles.actionsTitle}>Account Actions</h2>
             <p className={styles.actionsSubtitle}>Manage your account and preferences</p>
           </div>
           <div className={styles.actionsContent}>
-            <Link href="/saved" className={styles.actionButton}>
-              <MapPin className={styles.actionIcon} />
-              Manage Saved Locations
-            </Link>
             <button className={styles.actionButtonDanger} onClick={handleLogout}>
               <LogOut className={styles.actionIcon} />
               Sign Out
             </button>
           </div>
-        </div>
+        </Card>
       </main>
     </div>
+    </>
   )
 }
 
