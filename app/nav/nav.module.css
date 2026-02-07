@@ -1,0 +1,166 @@
+.nav {
+  background-color: #34a853;
+  border-bottom: 1px solid #34a853;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.container {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.navInner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 4rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.logoText {
+  font-weight: bold;
+  font-size: 1.125rem;
+  color: #ffffff;
+}
+
+.desktopNav {
+  display: none;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .desktopNav {
+    display: flex;
+  }
+}
+
+.navLink {
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: color 0.3s;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.navLink:hover {
+  color: #111111;
+}
+
+.navLink.active {
+  color: #111111;
+}
+
+.authSection {
+  display: none;
+  align-items: center;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .authSection {
+    display: flex;
+  }
+}
+
+.welcomeText {
+  font-size: 0.875rem;
+  color: #ffffff;
+}
+
+.username {
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.authButton {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #ffffff;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.3s;
+  text-decoration: none;
+}
+
+.authButton:hover {
+  color: rgb(186, 12, 47);
+}
+
+.iconButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  transition: opacity 0.3s;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+}
+
+.iconButton:hover {
+  opacity: 0.8;
+}
+
+.menuButton {
+  display: block;
+  padding: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  font-size: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .menuButton {
+    display: none;
+  }
+}
+
+.mobileMenu {
+  display: block;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  border-top: 1px solid #111111;
+}
+
+@media (min-width: 768px) {
+  .mobileMenu {
+    display: none;
+  }
+}
+
+.mobileMenuContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.mobileAuthSection {
+  padding-top: 1rem;
+  border-top: 1px solid #111111;
+}
+
+.mobileAuthText {
+  font-size: 0.875rem;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.mobileAuthButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
