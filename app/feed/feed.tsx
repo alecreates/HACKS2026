@@ -8,16 +8,6 @@ import Listing from "../listing/listing";
 type FeedProps = {
   listings: ReactElement<typeof Listing>[];
 };
-/*
-interface Props {
-  listings: {
-    displayName: string;
-    request: string;
-    offer: string;
-    isOwner?: boolean;
-    createdAt: string;
-  }[];
-}*/
 
 const Feed = ({ listings }: FeedProps) => {
 
