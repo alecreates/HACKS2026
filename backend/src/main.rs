@@ -12,12 +12,13 @@ use axum::{
     body::Body,
     routing::{post, get}, Router,
     response::{IntoResponse},
+    http::{header::{CONTENT_TYPE, AUTHORIZATION}, Method, HeaderValue},
 };
 use chrono::{DateTime, Utc};
-use serde::{Serialize, Deserialize};
 use serde_repr::{Serialize_repr, Deserialize_repr};
+use serde::{Serialize, Deserialize};
 use sqlx::{Connection, SqliteConnection};
-
+use tower_http::cors::{CorsLayer, Any};
 use tower_http::trace::TraceLayer;
 use tracing_subscriber::EnvFilter;
 
@@ -49,11 +50,17 @@ async fn main() -> AnyResult<()> {
         )),
     };
 
+    let cors = CorsLayer::new()
+        .allow_origin("http://localhost:3000".parse::<HeaderValue>().unwrap())
+        .allow_methods([Method::GET, Method::POST, Method::PUT, Method::DELETE])
+        .allow_headers([CONTENT_TYPE, AUTHORIZATION]);
+
     let app = Router::new()
         .route("/api/register", post(api::register))
-        // .route("/api/login", get(api::list_builds))
+        .route("/api/login", post(api::login))
         // .route("/api/match", get(api::list_builds))
         .layer(TraceLayer::new_for_http())
+        .layer(cors)
         .with_state(state);
 
     let listener = tokio::net::TcpListener::bind((Ipv4Addr::UNSPECIFIED, port)).await?;

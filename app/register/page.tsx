@@ -2,8 +2,12 @@
 
 import React, { useState } from "react";
 import styles from "./register.module.css";
+import { useRouter } from "next/navigation";
+import { Link } from "lucide-react";
 
 const Register = ({ }) => {
+
+  const router = useRouter();
 
   type RegisterPayload = {
     username: string;
@@ -50,6 +54,10 @@ const Register = ({ }) => {
 
       console.log("Registration successful:", data);
       alert("Registration successful!");
+
+      // route to feed
+      router.push("/login");
+
 
       // Optional: redirect to login page
       // window.location.href = "/login";
