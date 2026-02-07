@@ -23,15 +23,15 @@ const Listing = ({ displayName, request, offer, createdAt, isOwner = false }: Pr
 
                 {/* Header */}
                 <div className={styles.header}>
-                    <span className={styles.name}>Neighbor: {displayName}</span>
+                    <span className={styles.name}>{displayName}</span>
                 </div>
 
                 {/* Title */}
-                <h2 className={styles.title}>Request: {request}</h2>
+                <h2 className={styles.title}>{request}</h2>
 
                 {/* Offer */}
                 <h2 className={styles.offers}>
-                    Exchange Offer: {offer}
+                    Offering: {offer}
                 </h2>
 
                 <h2 className={styles.offers}>

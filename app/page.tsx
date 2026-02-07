@@ -5,6 +5,12 @@ import Create from "./create/create";
 
 export default function Home() {
   return (
-   <Create></Create>
+    <Listing
+    displayName="Alex Neighbor"
+    request="Need help fixing my fence"
+    offer=
+      "Home-cooked meal"
+    createdAt="5 days ago" 
+  />
   );
 }
