@@ -23,7 +23,7 @@ export default function SplashPage() {
         </div>
 
         <div className={styles.heroContent}>
-          {/* Logo/Brand */}
+          {/* Logo */}
           <div className={styles.brandSection}>
             <div className={styles.logoCircle}>
               <WandSparkles className={styles.logoIcon} />
@@ -64,13 +64,6 @@ export default function SplashPage() {
           </div>
         </div>
       </div>
-
-      {/* Footer */}
-      <footer className={styles.footer}>
-        <div className={styles.footerContent}>
-          <p></p>
-        </div>
-      </footer>
     </div>
   )
 }
