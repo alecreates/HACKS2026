@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./create.module.css";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 const Create = () => {
   const router = useRouter();
@@ -69,8 +70,11 @@ const Create = () => {
       if (popoverElement && popoverElement.hidePopover) {
         popoverElement.hidePopover();
       }
-      
-      router.push("/feed");
+
+      toast.success("Post created!", {
+        position: "bottom-right",
+        autoClose: 2000,
+      });
 
     } catch (error) {
       console.error("Network error:", error);
