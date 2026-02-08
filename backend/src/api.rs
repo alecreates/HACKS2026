@@ -156,7 +156,7 @@ pub async fn register(
         "INSERT INTO Users
             (joined, username, name, password, nhood, phone)
         VALUES
-            ($1, $2, $3, $4, $5);"
+            ($1, $2, $3, $4, $5, $6);"
     )
         .bind(chrono::Utc::now().timestamp())
         .bind(q.username)
