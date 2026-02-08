@@ -87,11 +87,12 @@ impl IntoResponse for AuthError {
 
 #[derive(Clone)]
 pub enum ApiError {
-    CannotMatchWithSelf,
-    NotFound,
+    AlreadyArchived,
     Auth(AuthError),
-    Forbidden,
+    CannotMatchWithSelf,
     Internal(InternalError),
+    NotFound,
+    Unauthorized,
 }
 
 impl ApiError {
@@ -105,11 +106,12 @@ impl IntoResponse for ApiError {
         use StatusCode as SC;
 
         match self {
-            ApiError::CannotMatchWithSelf => (SC::BAD_REQUEST, "Cannot match with self").into_response(),
-            ApiError::NotFound => (SC::NOT_FOUND, "Not found").into_response(),
+            ApiError::AlreadyArchived => (SC::BAD_REQUEST, "Already archived").into_response(),
             ApiError::Auth(e) => e.into_response(),
-            ApiError::Forbidden => (SC::FORBIDDEN, "Forbidden").into_response(),
+            ApiError::CannotMatchWithSelf => (SC::BAD_REQUEST, "Cannot match with self").into_response(),
             ApiError::Internal(e) => e.into_response(),
+            ApiError::NotFound => (SC::NOT_FOUND, "Not found").into_response(),
+            ApiError::Unauthorized => (SC::UNAUTHORIZED, "Unauthorized").into_response(),
         }
     }
 }
@@ -401,6 +403,50 @@ pub async fn make_match(
     )
         .bind(author)
         .bind(auth.user_id)
+        .bind(q.pid.cast_signed())
+        .execute(&mut *conn).await
+        .map_err(ApiError::internal)?;
+
+    Ok("Success".to_string())
+}
+
+#[derive(Clone, Debug, Deserialize)]
+pub struct UserArchivePost {
+    pid: u64,
+}
+
+pub async fn archive_post(
+    State(state): State<AppState>,
+    auth: Auth,
+    Query(q): Query<UserArchivePost>,
+)
+    -> Result<String, ApiError>
+{
+    let mut conn = state.db.lock().await;
+
+    // Check if the post is already archived, and check ownership.
+    {
+        #[derive(FromRow)]
+        struct P { author: i64, archived: bool }
+        let data = sqlx::query_as::<_, P>(
+            "SELECT author, archived FROM Posts WHERE id = $1;"
+        )
+            .bind(q.pid.cast_signed())
+            .fetch_one(&mut *conn)
+            .await;
+
+        match data {
+            Ok(P { archived, .. }) if archived => Err(ApiError::AlreadyArchived),
+            Ok(P { author, .. }) if author != auth.user_id => Err(ApiError::Unauthorized),
+            Err(sqlx::Error::RowNotFound) => Err(ApiError::NotFound),
+            Err(err) => Err(ApiError::internal(err)),
+            _ => Ok(()),
+        }?
+    }
+
+    _ = sqlx::query(
+        "UPDATE Posts SET archived = 1 WHERE id = $1;"
+    )
         .bind(q.pid.cast_signed())
         .execute(&mut *conn).await
         .map_err(ApiError::internal)?;

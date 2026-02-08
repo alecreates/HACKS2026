@@ -62,6 +62,7 @@ async fn main() -> AnyResult<()> {
         .route("/feed", get(api::feed))
         .route("/match", get(api::make_match))
         .route("/responses", get(api::fetch_responses))
+        .route("/rkyv", get(api::archive_post))
         .layer(TraceLayer::new_for_http())
         .layer(cors)
         .with_state(state);
