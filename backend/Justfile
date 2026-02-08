@@ -8,7 +8,7 @@ resetdb:
 deploy:
 	cargo build --release
 	ssh illuvatar -- 'sudo systemctl stop hacks26'
-	scp target/release/hacks26 illuvatar:/home/hacks26/bin/hacks26
+	rsync -avz --progress target/release/hacks26 illuvatar:/home/hacks26/bin/hacks26
 	ssh illuvatar -- 'sudo chown -R hacks26:hacks26 /home/hacks26/'
 	ssh illuvatar -- 'sudo chmod -R g+w /home/hacks26'
 	ssh illuvatar -- 'sudo systemctl start hacks26'
