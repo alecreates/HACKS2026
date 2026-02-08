@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import styles from "./feed.module.css";
-import Listing from "../listing/page";
+import Listing from "../listing/listing";
 import Create from "../create/create";
 
 const Feed = () => {

@@ -8,10 +8,10 @@ import styles from "./profile.module.css"
 import Card from "../components/Card"
 import Image from "next/image"
 
-function formatRelativeTime(date) {
+function formatRelativeTime(date: Date) {
   const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
   const now = new Date();
-  const diffMs = date - now;
+  const diffMs = date.valueOf() - now.valueOf();
   const diffSeconds = Math.floor(diffMs / 1000);
   const diffMinutes = Math.floor(diffSeconds / 60);
   const diffHours = Math.floor(diffMinutes / 60);
@@ -32,9 +32,27 @@ function formatRelativeTime(date) {
   return result.replace(' ago', '').replace(' from now', '');
 }
 
+interface Basic {
+  name: string;
+  username: string;
+  phone: string;
+  joined: number;
+}
+
+interface Additional {
+  neighbors_helped: number;
+  requests_made: number;
+  favors_exchanged: number;
+}
+
+interface UserData {
+  basic: Basic;
+  additional: Additional;
+}
+
 export default function ProfilePage() {
   const router = useRouter()
-  const [userData, setUserData] = useState<any[]>([]);
+  const [userData, setUserData] = useState<UserData | null>(null);
 
   useEffect(() => {
     const fetchInfo = async () => {
@@ -73,7 +91,7 @@ export default function ProfilePage() {
       {/* Content */}
       <main className={styles.main}>
         {/* Profile Card */}
-        {userData.length === 0 ? (
+        {userData === null ? (
           <p>Loading...</p>
         ) : (
           <>
