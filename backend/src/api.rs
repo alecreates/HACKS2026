@@ -474,6 +474,7 @@ pub async fn fetch_responses(
         post_request: String,
         post_offer: String,
         post_timestamp: i64,
+        post_archived: bool,
     }
 
     let items = sqlx::query_as::<_, Item>(
@@ -486,7 +487,8 @@ pub async fn fetch_responses(
           p.title as post_title,
           p.request as post_request,
           p.offer as post_offer,
-          p.timestamp as post_timestamp
+          p.timestamp as post_timestamp,
+          p.archived as post_archived
         FROM Matches m
         JOIN Users u on m.accepter = u.id
         JOIN Posts p on m.post = p.id
