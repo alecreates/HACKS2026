@@ -5,7 +5,12 @@ import styles from "./create.module.css";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
-const Create = () => {
+
+type CreateProps = {
+  refreshFeed: () => Promise<void>;
+};
+
+const Create = ({ refreshFeed }: CreateProps) => {
   const router = useRouter();
 
   const [title, setTitle] = useState('');
@@ -13,9 +18,16 @@ const Create = () => {
   const [offer, setOffer] = useState('');
   const [isOpen, setIsOpen] = useState(true);
 
+  // Function to clear all inputs
+  const clearInputs = () => {
+    setTitle('');
+    setRequest('');
+    setOffer('');
+  };
+
   useEffect(() => {
     const popoverElement = document.getElementById('create') as HTMLElement & { showPopover?: () => void };
-    
+
     const handleToggle = () => {
       if (popoverElement?.matches(':popover-open')) {
         setIsOpen(true);
@@ -64,18 +76,23 @@ const Create = () => {
 
       // Optionally redirect after successful post
       setIsOpen(false);
-      
-      // Close the parent popover element
-      const popoverElement = document.getElementById('create') as HTMLElement & { hidePopover?: () => void };
-      if (popoverElement && popoverElement.hidePopover) {
-        popoverElement.hidePopover();
-      }
 
+      clearInputs(); // Clear inputs after successful post
+
+      // Refresh the feed in the parent
+      await refreshFeed();
+
+      // Show toast after refresh
       toast.success("Post created!", {
         position: "bottom-right",
         autoClose: 2000,
       });
 
+      // Close the parent popover element
+      const popoverElement = document.getElementById('create') as HTMLElement & { hidePopover?: () => void };
+      if (popoverElement && popoverElement.hidePopover) {
+        popoverElement.hidePopover();
+      }
     } catch (error) {
       console.error("Network error:", error);
       alert("Network error");
@@ -87,7 +104,7 @@ const Create = () => {
     event.preventDefault();
 
     setIsOpen(false); // closes the popover
-    
+
     // Close the parent popover element
     const popoverElement = document.getElementById('create') as HTMLElement & { hidePopover?: () => void };
     if (popoverElement && popoverElement.hidePopover) {

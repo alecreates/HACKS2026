@@ -9,29 +9,32 @@ const Feed = () => {
   const [feedData, setFeedData] = useState<any[]>([]);
 
 
+  const fetchFeed = async () => {
+    try {
+      const res = await fetch("https://api.26.hacks.illuvatar.org/feed", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + localStorage.getItem("token"),
+        },
+      });
+
+      const data = await res.json();   // ✅ parentheses
+      console.log(data)
+
+      setFeedData(data); // store if you want to render later
+    } catch (error) {
+      console.error("Network error:", error);
+      alert("You're already requested this match!");
+    }
+  };
+
   useEffect(() => {
-    const fetchFeed = async () => {
-      try {
-        const res = await fetch("https://api.26.hacks.illuvatar.org/feed", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + localStorage.getItem("token"),
-          },
-        });
 
-        const data = await res.json();   // ✅ parentheses
-        console.log(data)
-
-        setFeedData(data); // store if you want to render later
-      } catch (error) {
-        console.error("Network error:", error);
-        alert("You're already requested this match!");
-      }
-    };
-
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchFeed();
   }, []);
+
 
   return (
     <div className={styles.container}>
@@ -47,7 +50,7 @@ const Feed = () => {
       </div>
 
       <div popover="auto" id="create" className={styles.create_popover}>
-        <Create />
+        <Create refreshFeed={fetchFeed} />
       </div>
 
       <br />
