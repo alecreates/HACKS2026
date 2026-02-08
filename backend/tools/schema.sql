@@ -1,5 +1,6 @@
 CREATE TABLE IF NOT EXISTS Users (
 	id       INTEGER PRIMARY KEY,
+	joined   INTEGER NOT NULL,
 	username TEXT UNIQUE NOT NULL,
 	name     TEXT NOT NULL,
 	password TEXT NOT NULL,
@@ -23,6 +24,7 @@ CREATE TABLE IF NOT EXISTS Matches (
 	author   INTEGER NOT NULL,
 	accepter INTEGER,
 	post     INTEGER NOT NULL,
+	UNIQUE (author, accepter, post),
 	FOREIGN KEY(author) REFERENCES Users(id),
 	FOREIGN KEY(accepter) REFERENCES Users(id),
 	FOREIGN KEY(post) REFERENCES Posts(id)
