@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import styles from "./register.module.css";
 import { useRouter } from "next/navigation";
 import { Link } from "lucide-react";
+import { ToastContainer, toast, Bounce } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Register = ({ }) => {
 
@@ -48,15 +50,17 @@ const Register = ({ }) => {
 
       if (!res.ok) {
         console.error("Registration failed:", data);
-        alert("Registration failed: " + data);
+        toast.error("Registration failed: " + data);
         return;
       }
 
       console.log("Registration successful:", data);
-      alert("Registration successful!");
+      toast.success("Registration successful!");
 
-      // route to feed
-      router.push("/login");
+      // Wait 3.5 seconds before redirecting to let the toast show fully
+      setTimeout(() => {
+        router.push("/login");
+      }, 3500);
 
 
       // Optional: redirect to login page
@@ -64,12 +68,25 @@ const Register = ({ }) => {
 
     } catch (err) {
       console.error("Network error:", err);
-      alert("Network error");
+      toast.error("Network error");
     }
   };
 
   return (
     <div className={styles.container}>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Bounce}
+      />
       <form onSubmit={handleSubmit} className={styles.loginForm}>
         <div className={styles.header}>Register</div>
         <div className={styles.field}>
