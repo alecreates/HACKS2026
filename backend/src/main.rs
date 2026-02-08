@@ -18,7 +18,7 @@ use chrono::{DateTime, Utc};
 use serde_repr::{Serialize_repr, Deserialize_repr};
 use serde::{Serialize, Deserialize};
 use sqlx::{Connection, SqliteConnection};
-use tower_http::cors::{CorsLayer, Any};
+use tower_http::cors::{AllowOrigin, CorsLayer, Any};
 use tower_http::trace::TraceLayer;
 use tracing_subscriber::EnvFilter;
 
@@ -51,7 +51,10 @@ async fn main() -> AnyResult<()> {
     };
 
     let cors = CorsLayer::new()
-        .allow_origin("http://localhost:3000".parse::<HeaderValue>().unwrap())
+        .allow_origin(AllowOrigin::list([
+            "http://localhost:3000".parse().unwrap(),
+            "https://26.hacks.illuvatar.org".parse().unwrap(),
+        ]))
         .allow_methods([Method::GET, Method::POST, Method::PUT, Method::DELETE])
         .allow_headers([CONTENT_TYPE, AUTHORIZATION]);
 
