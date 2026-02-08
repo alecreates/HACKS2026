@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./create.module.css";
 import { useRouter } from "next/navigation";
 
@@ -11,6 +11,23 @@ const Create = () => {
   const [request, setRequest] = useState('');
   const [offer, setOffer] = useState('');
   const [isOpen, setIsOpen] = useState(true);
+
+  useEffect(() => {
+    const popoverElement = document.getElementById('create') as HTMLElement & { showPopover?: () => void };
+    
+    const handleToggle = () => {
+      if (popoverElement?.matches(':popover-open')) {
+        setIsOpen(true);
+      } else {
+        setIsOpen(false);
+      }
+    };
+
+    popoverElement?.addEventListener('toggle', handleToggle);
+    return () => {
+      popoverElement?.removeEventListener('toggle', handleToggle);
+    };
+  }, []);
 
   const handlePost = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -45,6 +62,14 @@ const Create = () => {
       }
 
       // Optionally redirect after successful post
+      setIsOpen(false);
+      
+      // Close the parent popover element
+      const popoverElement = document.getElementById('create') as HTMLElement & { hidePopover?: () => void };
+      if (popoverElement && popoverElement.hidePopover) {
+        popoverElement.hidePopover();
+      }
+      
       router.push("/feed");
 
     } catch (error) {
@@ -58,6 +83,12 @@ const Create = () => {
     event.preventDefault();
 
     setIsOpen(false); // closes the popover
+    
+    // Close the parent popover element
+    const popoverElement = document.getElementById('create') as HTMLElement & { hidePopover?: () => void };
+    if (popoverElement && popoverElement.hidePopover) {
+      popoverElement.hidePopover();
+    }
   }
 
   return (

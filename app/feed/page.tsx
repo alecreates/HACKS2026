@@ -45,7 +45,7 @@ const Feed = () => {
         </div>
       </div>
 
-      <div popover="" id="create" className={styles.create_popover}>
+      <div popover="auto" id="create" className={styles.create_popover}>
         <Create />
       </div>
 
