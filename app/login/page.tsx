@@ -3,7 +3,8 @@
 import React, { useState } from "react";
 import styles from "./login.module.css";
 import { useRouter } from "next/navigation";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const router = useRouter();
@@ -14,10 +15,7 @@ const Login = () => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const payload = {
-      username,
-      password,
-    };
+    const payload = { username, password };
 
     try {
       const res = await fetch("https://26.hacks.illuvatar.org/api/login", {
@@ -28,64 +26,74 @@ const Login = () => {
         body: JSON.stringify(payload),
       });
 
-      // Read the plain text token from the response
       const token = await res.text();
 
       if (!res.ok) {
-        alert("Login failed: " + token);
+        toast.error(`Login failed: ${token}`, {
+          position: "bottom-right",
+          autoClose: 3000,
+        });
         return;
       }
 
-      // Store username and token in localStorage
+      // Store username and token
       localStorage.setItem("username", username);
       localStorage.setItem("token", token);
 
       // trigger global update
       window.dispatchEvent(new Event("auth-change"));
 
-      alert("Login successful!");
+      toast.success("Login successful!", {
+        position: "bottom-right",
+        autoClose: 2000,
+      });
 
-      // Redirect to home page
-      router.push("/feed");
+      // Redirect after small delay so toast shows
+      setTimeout(() => {
+        router.push("/feed");
+      }, 1200);
 
     } catch (error) {
       console.error("Network error:", error);
-      alert("Network error");
+      toast.error("Network error. Please try again.");
     }
-
-  }
-
-    return (
-      <div className={styles.container}>
-
-        <form onSubmit={handleSubmit} className={styles.loginForm}>
-          <div className={styles.header}>Log in</div>
-          <div className={styles.field}>
-            <label htmlFor="username">Username</label>
-            <input
-              type="text"
-              id="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-            />
-          </div>
-
-          <div className={styles.field}>
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-          <button type="submit" className={styles.button}>Log In</button>
-        </form>
-      </div>
-
-    );
   };
 
-  export default Login;
+  return (
+    <div className={styles.container}>
+
+      {/* Toast container must be rendered */}
+      <ToastContainer />
+
+      <form onSubmit={handleSubmit} className={styles.loginForm}>
+        <div className={styles.header}>Log in</div>
+
+        <div className={styles.field}>
+          <label htmlFor="username">Username</label>
+          <input
+            type="text"
+            id="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+        </div>
+
+        <div className={styles.field}>
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+
+        <button type="submit" className={styles.button}>Log In</button>
+      </form>
+    </div>
+  );
+};
+
+export default Login;
