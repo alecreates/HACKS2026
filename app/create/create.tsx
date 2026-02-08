@@ -114,6 +114,7 @@ const Create = () => {
                 <input
                   type="text"
                   id="title"
+                  placeholder="For your record-keeping!"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   required
@@ -127,6 +128,7 @@ const Create = () => {
               <div className={styles.field}>
                 <input
                   type="text"
+                  placeholder="Others will see this"
                   id="request"
                   value={request}
                   onChange={(e) => setRequest(e.target.value)}
@@ -143,6 +145,7 @@ const Create = () => {
                 <input
                   type="text"
                   id="offer"
+                  placeholder="Others will see this"
                   value={offer}
                   onChange={(e) => setOffer(e.target.value)}
                   required

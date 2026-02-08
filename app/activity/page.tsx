@@ -77,7 +77,6 @@ const Activity = () => {
         });
 
         const data = await res.json();
-        console.log("Raw API data:", data);
 
         // Separate archived and active requests based on post_archived flag
         const activeRequests = data

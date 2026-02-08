@@ -21,6 +21,7 @@ const Feed = () => {
         });
 
         const data = await res.json();   // ✅ parentheses
+        console.log(data)
 
         setFeedData(data); // store if you want to render later
       } catch (error) {
@@ -55,20 +56,23 @@ const Feed = () => {
         {feedData.length === 0 ? (
           <p>Loading listings...</p>
         ) : (
-          feedData.map((item, index) => (
-            <Listing
-              key={index}
-              displayName={item.author || item.username}
-              request={item.request}
-              offer={item.offer}
-              createdAt={new Date(item.timestamp * 1000).toLocaleString()}
-              isOwner={false}
-              username={item.username}
-              id={item.id}
-            />
-          ))
+          feedData
+            .filter(item => !item.archived) // <-- only include non-archived posts
+            .map((item, index) => (
+              <Listing
+                key={index}
+                displayName={item.author || item.username}
+                request={item.request}
+                offer={item.offer}
+                createdAt={new Date(item.timestamp * 1000).toLocaleString()}
+                isOwner={false}
+                username={item.username}
+                id={item.id}
+              />
+            ))
         )}
       </div>
+
 
     </div>
   );
