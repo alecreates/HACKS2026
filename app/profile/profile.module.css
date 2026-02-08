@@ -252,7 +252,6 @@
   font-size: 1rem;
   font-weight: 500;
   background-color: transparent;
-  color: var(--foreground);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   cursor: pointer;
@@ -267,13 +266,14 @@
 .actionButtonDanger {
   color: #ef4444;
   background-color: transparent;
-  border: 1px solid #ef4444;
+  border: 1.5px solid #ef4444;
   width: fit-content;
   border-radius: 6px;
 }
 
 .actionButtonDanger:hover {
-  background-color: color-mix(in srgb, var(--destructive) 10%, transparent);
+  background-color: #ef4444;
+  color: white;
 }
 
 .actionIcon {
