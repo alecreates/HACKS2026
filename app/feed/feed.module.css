@@ -46,6 +46,7 @@
 .create_card {
     background: white;
     width: 50%;
+    color: #34383555;
     padding: 1.5rem;
     border-radius: 14px;
     display: flex;
