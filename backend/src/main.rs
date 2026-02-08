@@ -56,13 +56,14 @@ async fn main() -> AnyResult<()> {
         .allow_headers([CONTENT_TYPE, AUTHORIZATION]);
 
     let app = Router::new()
-        .route("/register", post(api::register))
-        .route("/login", post(api::login))
         .route("/create", post(api::create_post))
         .route("/feed", get(api::feed))
+        .route("/login", post(api::login))
         .route("/match", get(api::make_match))
+        .route("/register", post(api::register))
         .route("/responses", get(api::fetch_responses))
         .route("/rkyv", get(api::archive_post))
+        .route("/user", get(api::user_info))
         .layer(TraceLayer::new_for_http())
         .layer(cors)
         .with_state(state);

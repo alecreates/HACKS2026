@@ -154,10 +154,11 @@ pub async fn register(
 
     let r = sqlx::query(
         "INSERT INTO Users
-            (username, name, password, nhood, phone)
+            (joined, username, name, password, nhood, phone)
         VALUES
             ($1, $2, $3, $4, $5);"
     )
+        .bind(chrono::Utc::now().timestamp())
         .bind(q.username)
         .bind(q.name)
         .bind(new_hash.serialize().as_str())
@@ -499,4 +500,71 @@ pub async fn fetch_responses(
         .map_err(ApiError::internal)?;
 
     Ok(serde_json::to_string(&items).unwrap())
+}
+
+pub async fn user_info(
+    State(state): State<AppState>,
+    auth: Auth,
+)
+    -> Result<String, ApiError>
+{
+    let mut conn = state.db.lock().await;
+
+    #[derive(Serialize, FromRow)]
+    struct BasicInfo {
+        uid: i64,
+        joined: i64,
+        username: String,
+        name: String,
+        phone: String,
+    }
+
+    let basic = sqlx::query_as::<_, BasicInfo>(
+        "SELECT id as uid, joined, username, name, phone FROM Users WHERE id = $1;"
+    )
+        .bind(auth.user_id)
+        .fetch_one(&mut *conn).await
+        .map_err(ApiError::internal)?;
+
+    // Neighbors helped: number of neighbors (not posts) that were matched with and then archived
+    let neighbors_helped = sqlx::query_scalar(
+        "SELECT COUNT(DISTINCT m.author) FROM Matches m JOIN Posts p on m.post = p.id
+        WHERE p.archived != 0 AND m.accepter = $1;"
+    )
+        .bind(auth.user_id)
+        .fetch_one(&mut *conn).await
+        .map_err(ApiError::internal)?;
+
+    // Number of posts, archived and unarchived
+    let requests_made = sqlx::query_scalar("SELECT COUNT(DISTINCT id) FROM Posts WHERE author = $1;")
+        .bind(auth.user_id)
+        .fetch_one(&mut *conn).await
+        .map_err(ApiError::internal)?;
+
+    // Number of posts matched with and then archived
+    let favors_exchanged = sqlx::query_scalar(
+        "SELECT COUNT(DISTINCT m.id) FROM Matches m JOIN Posts p on m.post = p.id
+        WHERE p.archived != 0 AND m.accepter = $1;"
+    )
+        .bind(auth.user_id)
+        .fetch_one(&mut *conn).await
+        .map_err(ApiError::internal)?;
+
+    #[derive(Serialize, FromRow)]
+    struct Additional {
+        neighbors_helped: u32,
+        requests_made: u32,
+        favors_exchanged: u32,
+    }
+
+    #[derive(Serialize, FromRow)]
+    struct Info {
+        basic: BasicInfo,
+        additional: Additional,
+    }
+
+    Ok(serde_json::to_string(&Info {
+        basic,
+        additional: Additional { neighbors_helped, requests_made, favors_exchanged },
+    }).unwrap())
 }
