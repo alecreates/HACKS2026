@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import styles from "./register.module.css";
 import { useRouter } from "next/navigation";
 import { Link } from "lucide-react";
+import { toast } from "react-toastify";
 
 const Register = ({ }) => {
 
@@ -53,7 +54,10 @@ const Register = ({ }) => {
       }
 
       console.log("Registration successful:", data);
-      alert("Registration successful!");
+      toast.success("Registration successful!", {
+        position: "bottom-right",
+        autoClose: 2000,
+      });
 
       // route to feed
       router.push("/login");
@@ -64,7 +68,10 @@ const Register = ({ }) => {
 
     } catch (err) {
       console.error("Network error:", err);
-      alert("Network error");
+      toast.error("Registration Failed", {
+        position: "bottom-right",
+        autoClose: 2000,
+      });
     }
   };
 
