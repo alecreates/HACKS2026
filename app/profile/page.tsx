@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { User, Mail, Calendar, LogOut } from 'lucide-react'
+import { Smartphone, Calendar, LogOut } from 'lucide-react'
 import Link from "next/link"
 import { useRouter } from 'next/navigation'
 import styles from "./profile.module.css"
@@ -11,19 +11,19 @@ import Image from "next/image"
 export default function ProfilePage() {
 
   const router = useRouter()
-  const [userEmail, setUserEmail] = useState("")
+  const [userPhone, setUserPhone] = useState("")
   const [userName, setUserName] = useState("")
 
   useEffect(() => {
-    const email = localStorage.getItem("userEmail") || "jake@gmail.com"
+    const phone = localStorage.getItem("userPhone") || "555-555-5555"
     const name = localStorage.getItem("userName") || "Jake"
-    setUserEmail(email)
+    setUserPhone(phone)
     setUserName(name)
   }, [])
 
   const handleLogout = () => {
     localStorage.removeItem("isAuthenticated")
-    localStorage.removeItem("userEmail")
+    localStorage.removeItem("userPhone")
     localStorage.removeItem("userName")
     router.push("/")
   }
@@ -64,8 +64,8 @@ export default function ProfilePage() {
               <h2 className={styles.profileName}>{userName}</h2>
               <div className={styles.profileMeta}>
                 <div className={styles.metaItem}>
-                  <Mail className={styles.metaIcon} />
-                  {userEmail}
+                  <Smartphone className={styles.metaIcon} />
+                  {userPhone}
                 </div>
                 <div className={styles.metaItem}>
                   <Calendar className={styles.metaIcon} />

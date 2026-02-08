@@ -215,6 +215,7 @@
 .actionsCard {
   background: white;
   box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  border-radius: 8px;
 }
 
 .actionsHeader {
@@ -264,7 +265,11 @@
 }
 
 .actionButtonDanger {
-  color: var(--destructive);
+  color: #ef4444;
+  background-color: transparent;
+  border: 1px solid #ef4444;
+  width: fit-content;
+  border-radius: 6px;
 }
 
 .actionButtonDanger:hover {
