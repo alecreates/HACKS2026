@@ -18,7 +18,7 @@ const Login = () => {
     const payload = { username, password };
 
     try {
-      const res = await fetch("https://26.hacks.illuvatar.org/api/login", {
+      const res = await fetch("https://api.26.hacks.illuvatar.org/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

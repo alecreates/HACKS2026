@@ -46,7 +46,7 @@ const Create = () => {
     };
 
     try {
-      const res = await fetch("https://26.hacks.illuvatar.org/api/create", {
+      const res = await fetch("https://api.26.hacks.illuvatar.org/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

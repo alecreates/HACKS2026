@@ -31,7 +31,7 @@ const Listing = ({
     if (!matched) {
       try {
         const res = await fetch(
-          `https://26.hacks.illuvatar.org/api/match?pid=${id}`,
+          `https://api.26.hacks.illuvatar.org/match?pid=${id}`,
           {
             method: "GET",
             headers: {

@@ -12,7 +12,7 @@ const Feed = () => {
   useEffect(() => {
     const fetchFeed = async () => {
       try {
-        const res = await fetch("https://26.hacks.illuvatar.org/api/feed", {
+        const res = await fetch("https://api.26.hacks.illuvatar.org/feed", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

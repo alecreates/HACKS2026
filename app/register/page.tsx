@@ -35,7 +35,7 @@ const Register = ({ }) => {
     event.preventDefault();
 
     try {
-      const res = await fetch("https://26.hacks.illuvatar.org/api/register", {  // use your Rust server URL
+      const res = await fetch("https://api.26.hacks.illuvatar.org/register", {  // use your Rust server URL
         method: "POST",
         headers: {
           "Content-Type": "application/json",

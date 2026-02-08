@@ -36,7 +36,7 @@ const Activity = () => {
   useEffect(() => {
     const fetchResponses = async () => {
       try {
-        const res = await fetch("https://26.hacks.illuvatar.org/api/responses", {
+        const res = await fetch("https://api.26.hacks.illuvatar.org/responses", {
           method: "GET",
           headers: {
             "Authorization": "Bearer " + localStorage.getItem("token"),
