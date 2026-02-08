@@ -60,7 +60,8 @@ const Feed = () => {
           <p>Loading listings...</p>
         ) : (
           feedData
-            .filter(item => !item.archived) // <-- only include non-archived posts
+            .filter(item => !item.archived) // only non-archived posts
+            .sort((a, b) => b.timestamp - a.timestamp) // sort by timestamp descending
             .map((item, index) => (
               <Listing
                 key={index}
@@ -75,6 +76,7 @@ const Feed = () => {
             ))
         )}
       </div>
+
 
 
     </div>
