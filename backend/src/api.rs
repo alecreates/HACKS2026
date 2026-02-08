@@ -348,11 +348,12 @@ pub async fn feed(
         title: String,
         request: String,
         offer: String,
+        archived: bool,
     }
 
     let posts = sqlx::query_as::<_, Post>(
         "SELECT
-          p.id, u.name as author, u.username, p.title, p.request, p.offer, p.timestamp
+          p.id, u.name as author, u.username, p.title, p.request, p.offer, p.timestamp, p.archived
         FROM Posts p
         JOIN Users u on author = u.id;"
     )
