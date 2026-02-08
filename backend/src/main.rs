@@ -60,6 +60,8 @@ async fn main() -> AnyResult<()> {
         .route("/api/login", post(api::login))
         .route("/api/create", post(api::create_post))
         .route("/api/feed", get(api::feed))
+        .route("/api/match", get(api::make_match))
+        .route("/api/responses", get(api::fetch_responses))
         .layer(TraceLayer::new_for_http())
         .layer(cors)
         .with_state(state);

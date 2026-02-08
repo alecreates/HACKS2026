@@ -85,3 +85,22 @@
     transform: scale(1.03);
     box-shadow: 0 6px 15px rgba(52,168,83,0.35);
   }
+
+  .cancelButton {
+    margin-top: 0.5rem;
+    align-self: flex-end;
+    padding: 0.6rem 1.2rem;
+    border-radius: 999px;
+    border: none;
+    background: #678f71;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .buttonDiv {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+  }
