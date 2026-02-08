@@ -8,32 +8,54 @@ import styles from "./profile.module.css"
 import Card from "../components/Card"
 import Image from "next/image"
 
-export default function ProfilePage() {
+function formatRelativeTime(date) {
+  const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
+  const now = new Date();
+  const diffMs = date - now;
+  const diffSeconds = Math.floor(diffMs / 1000);
+  const diffMinutes = Math.floor(diffSeconds / 60);
+  const diffHours = Math.floor(diffMinutes / 60);
+  const diffDays = Math.floor(diffHours / 24);
+  const diffWeeks = Math.floor(diffDays / 7);
+  const diffMonths = Math.floor(diffDays / 30);
+  const diffYears = Math.floor(diffDays / 365);
 
+  let result;
+  if (Math.abs(diffSeconds) < 60) result = rtf.format(diffSeconds, 'second');
+  else if (Math.abs(diffMinutes) < 60) result = rtf.format(diffMinutes, 'minute');
+  else if (Math.abs(diffHours) < 24) result = rtf.format(diffHours, 'hour');
+  else if (Math.abs(diffDays) < 7) result = rtf.format(diffDays, 'day');
+  else if (Math.abs(diffWeeks) < 4) result = rtf.format(diffWeeks, 'week');
+  else if (Math.abs(diffMonths) < 12) result = rtf.format(diffMonths, 'month');
+  else result = rtf.format(diffYears, 'year');
+
+  return result.replace(' ago', '').replace(' from now', '');
+}
+
+export default function ProfilePage() {
   const router = useRouter()
-  const [userPhone, setUserPhone] = useState("")
-  const [userName, setUserName] = useState("")
+  const [userData, setUserData] = useState<any[]>([]);
 
   useEffect(() => {
-    const phone = localStorage.getItem("userPhone") || "555-555-5555"
-    const name = localStorage.getItem("userName") || "Jake"
-    setUserPhone(phone)
-    setUserName(name)
-  }, [])
+    const fetchInfo = async () => {
+      try {
+        const res = await fetch("https://api.26.hacks.illuvatar.org/user", {
+          method: "GET",
+          headers: { "Authorization": "Bearer " + localStorage.getItem("token") },
+        });
+        const data = await res.json();
+        setUserData(data);
+      } catch (error) {
+        console.error("Network error:", error);
+      }
+    };
+
+    fetchInfo();
+  }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("isAuthenticated")
-    localStorage.removeItem("userPhone")
-    localStorage.removeItem("userName")
     router.push("/")
   }
-
-  const initials = userName
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2)
 
   return (
     <>
@@ -51,50 +73,56 @@ export default function ProfilePage() {
       {/* Content */}
       <main className={styles.main}>
         {/* Profile Card */}
-        <Card className={styles.profileCard}>
-          <div className={styles.profileContent}>
-            <Image
-              src="/jake.png"
-              alt={userName}
-              width={96}
-              height={96}
-              className={styles.profileImage}
-            />
-            <div className={styles.profileInfo}>
-              <h2 className={styles.profileName}>{userName}</h2>
-              <div className={styles.profileMeta}>
-                <div className={styles.metaItem}>
-                  <Smartphone className={styles.metaIcon} />
-                  {userPhone}
+        {userData.length === 0 ? (
+          <p>Loading...</p>
+        ) : (
+          <>
+          <Card className={styles.profileCard}>
+            <div className={styles.profileContent}>
+              <Image
+                src="/jake.png"
+                alt={userData.basic.name}
+                width={96}
+                height={96}
+                className={styles.profileImage}
+              />
+              <div className={styles.profileInfo}>
+                <h2 className={styles.profileName}>{userData.basic.name}</h2>
+                <div className={styles.profileMeta}>
+                  <div className={styles.metaItem}>
+                    <Smartphone className={styles.metaIcon} />
+                    {userData.basic.phone}
+                  </div>
+                  <div className={styles.metaItem}>
+                    <Calendar className={styles.metaIcon} />
+                    Neighbor for {formatRelativeTime(new Date(userData.basic.joined * 1000))}
+                  </div>
                 </div>
-                <div className={styles.metaItem}>
-                  <Calendar className={styles.metaIcon} />
-                  Neighbor since 2020
-                </div>
+                <span className={styles.badge}>Active User</span>
               </div>
-              <span className={styles.badge}>Active User</span>
             </div>
+          </Card>
+  
+	  {/* Stats */}
+          <div className={styles.statsGrid}>
+            <Card className={styles.statCard}>
+              <h3 className={styles.statTitle}>Neighbors Helped</h3>
+              <div className={styles.statValue}>{userData.additional.neighbors_helped}</div>
+              <p className={styles.statLabel}>This month</p>
+            </Card>
+            <Card className={styles.statCard}>
+              <h3 className={styles.statTitle}>Requests Made</h3>
+              <div className={styles.statValue}>{userData.additional.requests_made}</div>
+              <p className={styles.statLabel}>Total</p>
+            </Card>
+            <Card className={styles.statCard}>
+              <h3 className={styles.statTitle}>Favors Exchanged</h3>
+              <div className={styles.statValue}>{userData.additional.favors_exchanged}</div>
+              <p className={styles.statLabel}>All time</p>
+            </Card>
           </div>
-        </Card>
-
-        {/* Stats */}
-        <div className={styles.statsGrid}>
-          <Card className={styles.statCard}>
-            <h3 className={styles.statTitle}>Neighbors Helped</h3>
-            <div className={styles.statValue}>8</div>
-            <p className={styles.statLabel}>This month</p>
-          </Card>
-          <Card className={styles.statCard}>
-            <h3 className={styles.statTitle}>Requests Made</h3>
-            <div className={styles.statValue}>2</div>
-            <p className={styles.statLabel}>Total</p>
-          </Card>
-          <Card className={styles.statCard}>
-            <h3 className={styles.statTitle}>Favors Exchanged</h3>
-            <div className={styles.statValue}>10</div>
-            <p className={styles.statLabel}>All time</p>
-          </Card>
-        </div>
+          </>
+        )}
 
         {/* Actions */}
         <Card className={styles.actionsCard}>
@@ -114,4 +142,3 @@ export default function ProfilePage() {
     </>
   )
 }
-

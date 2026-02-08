@@ -6,14 +6,6 @@ import styles from "./splash.module.css"
 
 export default function SplashPage() {
   return (
-
-    /*   <Listing
-    displayName="Alex Neighbor"
-    request="Need help fixing my fence"
-    offer=
-      "Home-cooked meal"
-    createdAt="5 days ago" 
-  /> */
     <div className={styles.splashContainer}>
       {/* Hero Section */}
       <div className={styles.hero}>
