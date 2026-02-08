@@ -3,8 +3,8 @@
 import React, { useState } from "react";
 import styles from "./register.module.css";
 import { useRouter } from "next/navigation";
-import { Link } from "lucide-react";
 import { toast } from "react-toastify";
+import Link from "next/link";
 
 const Register = ({ }) => {
 
@@ -131,7 +131,7 @@ const Register = ({ }) => {
         </div>
         <button type="submit" className={styles.button}>Register</button>
         <div className={styles.header}>Already have an account?</div>
-        <div className={styles.header}>Log In</div>
+        <Link className={styles.header} href="/login">Log In</Link>
       </form>
     </div>
   );
