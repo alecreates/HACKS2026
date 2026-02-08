@@ -1,25 +1,23 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./activity.module.css";
 import Card from "../components/Card";
 import { MessageCircle, User } from "lucide-react";
 
 const Activity = () => {
   const initialCommunityRequests: Array<{ id: number | string; title: string; user: string; suffix: string; phone: string }> = [
-    { id: 1, title: "Help moving furniture", user: "Sarah Neighbor", suffix: "would like to help.", phone: "555 555 5551"},
-    { id: 2, title: "Garden watering", user: "Tom Neighbor", suffix: "would like to help.", phone: "555 555 5552"},
-    { id: 3, title: "Dog walking", user: "Maria Neighbor", suffix: "would like to help.", phone: "555 555 5553"},
+
   ];
 
   // Sample data for archived requests
   const initialArchivedRequests: Array<{ id: number | string; title: string; user: string; suffix: string; phone: string }> = [
-    { id: 1, title: "Grocery shopping help", user: "Sarah Neighbor", suffix: "helped with this request.", phone: "555 555 5551" },
-    { id: 2, title: "Tech support needed", user: "Tom Neighbor", suffix: "helped with this request.", phone: "555 555 5552" },
+    
   ];
 
   const [communityRequests, setCommunityRequests] = useState(initialCommunityRequests);
   const [archivedRequests, setArchivedRequests] = useState(initialArchivedRequests);
+  const [responseData, setResponseData] = useState<any[]>([]);
 
   const handleCheckRequest = (requestId: number | string) => {
     const requestToArchive = communityRequests.find(req => req.id === requestId);
@@ -34,6 +32,43 @@ const Activity = () => {
       setArchivedRequests([...archivedRequests, archivedRequest]);
     }
   };
+
+  useEffect(() => {
+    const fetchResponses = async () => {
+      try {
+        const res = await fetch("https://26.hacks.illuvatar.org/api/responses", {
+          method: "GET",
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
+        });
+
+        const data = await res.json();
+        console.log("Raw API data:", data);
+
+        // Transform API data to match the communityRequests format
+        const formattedRequests = data.map((item: any, index: number) => ({
+          id: index + 1,                  // just a simple numeric id
+          title: item.post_title,         // map from API
+          user: item.responder_name,      // map from API
+          suffix: "would like to help",   // constant suffix
+          phone: item.responder_phone,    // map from API
+        }));
+
+        setCommunityRequests(formattedRequests); // update state
+        setResponseData(data); // optional if you still want raw data
+
+      } catch (error) {
+        console.error("Network error:", error);
+        alert("Network error");
+      }
+    };
+
+    fetchResponses();
+  }, []);
+
+
+
 
 
 
@@ -63,8 +98,8 @@ const Activity = () => {
               ) : (
                 communityRequests.map((request) => (
                   <div key={request.id} className={styles.requestItem}>
-                    <input 
-                      type="checkbox" 
+                    <input
+                      type="checkbox"
                       className={styles.requestCheckbox}
                       onChange={() => handleCheckRequest(request.id)}
                     />
@@ -91,6 +126,7 @@ const Activity = () => {
         <div className={styles.section}>
           <h2 className={styles.sectionTitle}>Archived Requests</h2>
           <Card className={styles.requestCard}>
+          <p>Archived requests will go here</p>
             <div className={styles.requestsContainer}>
               {archivedRequests.map((request) => (
                 <div key={request.id} className={styles.requestItem}>
