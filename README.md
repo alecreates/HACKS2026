@@ -1,3 +1,7 @@
+This is Magic Neighbor! A neighborhood exchange built on helping hands. Request help, offer your time, and support your community. Join today and be a better member of your community!
+
+Thanks for your considerations of your project!
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
